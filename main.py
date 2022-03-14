@@ -1,6 +1,22 @@
+#!/usr/bin/python3
+# coding: utf-8
+
+from __future__ import unicode_literals
+
+"""
+    M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
+    -------------------------------------------
+    Ce module lance l'API. 
+    :copyright: © 2022 by Élise & Lufei & Alexandra.
+"""
+
+__version__ = "0.1"
+
 from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_sqlalchemy import SQLAlchemy
+# Doc : https://flask-sqlalchemy.palletsprojects.com/en/2.x/
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 
 app = Flask(__name__)
@@ -44,6 +60,8 @@ def register():
             flash("You've already signed up with that email, log in instead!")
             return redirect(url_for('login'))
 
+        # Avant de stocker le mot de pass  dans la BDD, on applique le hashage `generate_password_hash()`
+        # Docs : https://werkzeug.palletsprojects.com/en/1.0.x/utils/#module-werkzeug.security
         hash_and_salted_password = generate_password_hash(
             request.form.get('password'),
             method='pbkdf2:sha256',
