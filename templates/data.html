@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="box">
+    <h1 class="title">Données COVID :</h1>
+    
+	<table>
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Date</th>
+			<th>Commune</th>
+		</tr>
+		</thead>
+		<tbody>
+			{% for row in output_data %}
+				<tr>
+					<td>{{row.id}}</td>
+					<td>{{row.date_reference}}</td>
+					<td>{{row.commune_residence}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+</div>
+
+{% endblock %}
