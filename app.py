@@ -168,6 +168,19 @@ def download():
 # Page qui affiche la base de données
 @app.route('/data', methods=["GET", "POST"])
 def data():
+
+    # ESSAI AJOUT D'UNE REQUETE
+    if request.method == "POST":
+        
+        # Récupération de la requête de l'utilisateur
+        # PREMIER TEST SUR LA COMMUNE UNIQUEMENT
+        commune = request.form.get('commune')
+        
+        # Recherche des données correspondantes dans la table DATA_COVID de la base de données
+        output_data = DATA_COVID.query.filter_by(libelle_commune=commune).all()
+        print(output_data)
+        return render_template("data.html", output_data=output_data)
+
     output_data = DATA_COVID.query.all()
     print(output_data)
     return render_template("data.html", output_data=output_data)
