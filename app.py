@@ -78,23 +78,14 @@ class DATA_COVID(db.Model):
 
     def __repr__(self):
         return '<Data %r>' % self.id
-        return [self.id, self.date_reference, self.libelle_commune]
 
-
-# Affiche la base de données (pour l'instant que 3 colonnes)
-@app.route('/data', methods=["GET", "POST"])
-def data():
-    output_data = DATA_COVID.query.all()
-    print(output_data)
-    return render_template("data.html", output_data=output_data)
-
-
+# Page d'accueil
 @app.route('/')
 def home():
     # Every render_template has a logged_in variable set.
     return render_template("index.html", logged_in=current_user.is_authenticated)
 
-
+# 
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -125,51 +116,61 @@ def register():
 
     return render_template("register.html", logged_in=current_user.is_authenticated)
 
-
+# Connexion
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        
+        # Récupération de l'email et du mot de passe saisis par l'utilisateur        
         email = request.form.get('email')
         password = request.form.get('password')
 
-        # Find user by email entered.
+        # Recherche de l'utilisateur dans la table USER de la base de données à partir de l'email saisi
         user = User.query.filter_by(email=email).first()
 
-        # Email doesn't exist
+        # Si l'email ne figure pas dans la base de données : échec de l'authentification. Renvoie la page login
         if not user:
-            flash("That email does not exist, please try again.")
+            flash("Identifiant incorrect.")
             return redirect(url_for("login"))
-        # Password incorrect
-        # Check stored password hash against entered password hashed.
+        
+        # Si l'email figure dans la base de données mais le mot de passe est incorrect : échec de l'authentification. Renvoie la page login
+        # check_password_hash compare le stored password hash et le entered password hashed
         elif not check_password_hash(user.password, password):
-            flash("Password incorrect, please try again.")
+            flash("Mot de passe incorrect.")
             return redirect(url_for("login"))
-        # Email exists and password correct
+        
+        # Sinon (email existant et mot de passe correct) : authentification réussie. Renvoie la page secrets
         else:
             login_user(user)
             return redirect(url_for('secrets'))
 
     return render_template("login.html", logged_in=current_user.is_authenticated)
 
-
+# Page de bienvenue, affichée une fois que l'utilisateur est connecté
 @app.route('/secrets')
 @login_required
 def secrets():
     print(current_user.name)
     return render_template("secrets.html", name=current_user.name, logged_in=True)
 
-
+# Déconnexion, renvoie la page d'accueil
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
 
-
+# Michael Scott
 @app.route('/download')
 @login_required
 def download():
     return send_from_directory('static', filename="files/giphy.gif")
 
+# Page qui affiche la base de données
+@app.route('/data', methods=["GET", "POST"])
+def data():
+    output_data = DATA_COVID.query.all()
+    print(output_data)
+    return render_template("data.html", output_data=output_data)
 
 if __name__ == "__main__":
     app.run(debug=True)
