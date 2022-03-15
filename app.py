@@ -43,13 +43,15 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(500))
     name = db.Column(db.String(1000))
+
+
 # Line below only required once, when creating DB.
 # db.create_all()
 
 # /!\ /!\ les types ne correspondent pas à ceux dans la bdd /!\ /!\
-class DATA_COVID(db.Model): 
+class DATA_COVID(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_reference = db.Column(db.String, nullable=False) #db.Column(db.Date, nullable=False)
+    date_reference = db.Column(db.String, nullable=False)  # db.Column(db.Date, nullable=False)
     semaine_injection = db.Column(db.Integer, nullable=False)
     commune_residence = db.Column(db.Integer, nullable=False)
     libelle_commune = db.Column(db.String(100), nullable=False)
@@ -64,7 +66,7 @@ class DATA_COVID(db.Model):
     taux_termine = db.Column(db.Float)
     taux_cumu_1_inj = db.Column(db.Float)
     taux_cumu_termine = db.Column(db.Float)
-    date = db.Column(db.String(100)) #db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.String(100))  # db.Column(db.DateTime, default=datetime.utcnow)
 
     """
     python3
@@ -78,7 +80,8 @@ class DATA_COVID(db.Model):
         return '<Data %r>' % self.id
         return [self.id, self.date_reference, self.libelle_commune]
 
-#Affiche la base de données (pour l'instant que 3 colonnes)
+
+# Affiche la base de données (pour l'instant que 3 colonnes)
 @app.route('/data', methods=["GET", "POST"])
 def data():
     output_data = DATA_COVID.query.all()
