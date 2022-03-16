@@ -26,7 +26,7 @@ def get_info_by_id(id_user):
                         "taux_cumu_termine":data.taux_cumu_termine,
                         "date":data.date
                     }
-    print(all_user_info)
+    return(all_user_info)
 
 # modifier les informations du bdd
 def change_info_by_id(id_user, item_to_change, new_info):
