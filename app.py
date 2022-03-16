@@ -200,7 +200,7 @@ def data():
 
 # TODO: AJOUT DU 16 MARS, A TESTER
 
-# Route qui permet de retourner toutes les données covid
+# Route qui permet de retourner toutes les données covid ✅
 @app.route('/covid/', methods=["GET"])
 def get_all_covid():
     result = DATA_COVID.query.all()
@@ -208,7 +208,109 @@ def get_all_covid():
     return jsonify(data_covid_schema.dump(result))
 
 
+# Route qui permet de retourner une donnée covid ✅
+@app.route('/covid/<int:id>/', methods=['GET'])
+def get_covid_by_id(id):
+    result = DATA_COVID.query.get(id)
+    data_covid_schema = DataCovidSchema()
+    return data_covid_schema.jsonify(result)
+
+
+# TODO: Comment afficher toutes les communes uniques ?
+"""SELECT DISTINCT libelle_commune FROM DATA_COVID;"""
+# Route qui permet de retourner toutes les communes 🐽 MARCHE PAS
+@app.route('/covid/getCommune/', methods=["GET"])
+def get_commune():
+    result = DATA_COVID.query.all()
+    data_covid_schema = DataCovidSchema(many=True)
+    return jsonify(data_covid_schema.dump(result))
+
+
+# Route qui affiche les données pour une commune ✅
+@app.route('/covid/getCovidByCommune/<string:libelle_commune>/', methods=["GET"])
+def get_covid_by_commune(libelle_commune):
+    # Récupération de la requête de l'utilisateur
+    # PREMIER TEST SUR LA COMMUNE UNIQUEMENT
+    commune = request.form.get('commune')
+
+    # Recherche des données correspondantes dans la table DATA_COVID de la base de données
+    result = DATA_COVID.query.filter_by(libelle_commune=commune).all()
+    data_covid_schema = DataCovidSchema(many=True)
+    return jsonify(data_covid_schema.dump(result))
+
+
+# Route qui crée une nouvelle donnée covid ✅
+@app.route('/covid/', methods=['POST'])
+def create_covid():
+    date_reference = request.json.get('date_reference', '')
+    semaine_injection = request.json.get('semaine_injection', '')
+    commune_residence = request.json.get('commune_residence', '')
+    libelle_commune = request.json.get('libelle_commune', '')
+    population_carto = request.json.get('population_carto', '')
+    classe_age = request.json.get('classe_age', '')
+    libelle_classe_age = request.json.get('libelle_classe_age', '')
+    effectif_1_inj = request.json.get('effectif_1_inj', '')
+    effectif_termine = request.json.get('effectif_termine', '')
+    effectif_cumu_1_inj = request.json.get('effectif_cumu_1_inj', '')
+    effectif_cumu_termine = request.json.get('effectif_cumu_termine', '')
+    taux_1_inj = request.json.get('taux_1_inj', '')
+    taux_termine = request.json.get('taux_termine', '')
+    taux_cumu_1_inj = request.json.get('taux_cumu_1_inj', '')
+    taux_cumu_termine = request.json.get('taux_cumu_termine', '')
+    date = request.json.get('date', '')
+
+    data = DATA_COVID(date_reference=date_reference, semaine_injection=semaine_injection,
+                      commune_residence=commune_residence,
+                      libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
+                      libelle_classe_age=libelle_classe_age, effectif_1_inj=effectif_1_inj,
+                      effectif_termine=effectif_termine,
+                      effectif_cumu_1_inj=effectif_cumu_1_inj, effectif_cumu_termine=effectif_cumu_termine,
+                      taux_1_inj=taux_1_inj, taux_termine=taux_termine, taux_cumu_1_inj=taux_cumu_1_inj,
+                      taux_cumu_termine=taux_cumu_termine, date=date)
+
+    db.session.add(data)
+    db.session.commit()
+    data_covid_schema = DataCovidSchema()
+    return data_covid_schema.jsonify(data)
+
+
+# Route qui met à jour une donnée covid ✅
+@app.route('/covid/<int:id>/', methods=["PATCH"])
+def update_covid(id):
+    data_covid = DATA_COVID.query.get(id)
+    data_covid.date_reference = request.json.get('date_reference', '')
+    data_covid.semaine_injection = request.json.get('semaine_injection', '')
+    data_covid.commune_residence = request.json.get('commune_residence', '')
+    data_covid.libelle_commune = request.json.get('libelle_commune', '')
+    data_covid.population_carto = request.json.get('population_carto', '')
+    data_covid.classe_age = request.json.get('classe_age', '')
+    data_covid.libelle_classe_age = request.json.get('libelle_classe_age', '')
+    data_covid.effectif_1_inj = request.json.get('effectif_1_inj', '')
+    data_covid.effectif_termine = request.json.get('effectif_termine', '')
+    data_covid.effectif_cumu_1_inj = request.json.get('effectif_cumu_1_inj', '')
+    data_covid.effectif_cumu_termine = request.json.get('effectif_cumu_termine', '')
+    data_covid.taux_1_inj = request.json.get('taux_1_inj', '')
+    data_covid.taux_termine = request.json.get('taux_termine', '')
+    data_covid.taux_cumu_1_inj = request.json.get('taux_cumu_1_inj', '')
+    data_covid.taux_cumu_termine = request.json.get('taux_cumu_termine', '')
+    data_covid.date = request.json.get('date', '')
+    db.session.add(data_covid)
+    db.session.commit()
+    data_covid_schema = DataCovidSchema()
+    return data_covid_schema.jsonify(data_covid)
+
+
+# Route qui supprimer une donnée covid ✅
+@app.route('/covid/<int:id>/', methods=["DELETE"])
+def delete_covid(id):
+    data_covid = DATA_COVID.query.get(id)
+    db.session.delete(data_covid)
+    db.session.commit()
+    data_covid_schema = DataCovidSchema()
+    return data_covid_schema.jsonify(data_covid)
+
+
 if __name__ == "__main__":
-    # si jamais le port bugge
-    # app’.run(host='127.0.0.1', port=5001)
+    # si jamais le port bugge, connecter àun autre
+    # app.run(host='127.0.0.1', port=5001)
     app.run(debug=True)
