@@ -270,7 +270,27 @@ def get_commune():
 
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 # @Lufei
-# Route qui permet de retourner toutes les données uniques
+# Route qui permet de retourner toutes les données uniques de certains colonnes
+@app.route('/covid/getInfo/<info>', methods=["GET"])
+def get_info(info):
+    info_recherche = '% s' % info
+    if info_recherche == "date_reference":
+        query = DATA_COVID.query.with_entities(DATA_COVID.libelle_commune).distinct()
+        results = [row.libelle_commune for row in query.all()]
+    elif info_recherche == "semaine_injection":
+        query = DATA_COVID.query.with_entities(DATA_COVID.semaine_injection).distinct()
+        results = [row.semaine_injection for row in query.all()]
+    elif info_recherche == "commune_residence":
+        query = DATA_COVID.query.with_entities(DATA_COVID.commune_residence).distinct()
+        results = [row.commune_residence for row in query.all()]
+    elif info_recherche == "population_carto":
+        query = DATA_COVID.query.with_entities(DATA_COVID.population_carto).distinct()
+        results = [row.population_carto for row in query.all()]
+    elif info_recherche == "classe_age":
+        query = DATA_COVID.query.with_entities(DATA_COVID.classe_age).distinct()
+        results = [row.classe_age for row in query.all()]
+
+    return jsonify({info_recherche: results})
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 
 
