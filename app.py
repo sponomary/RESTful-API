@@ -224,7 +224,7 @@ def get_covid_by_id(id):
 def get_commune():
     query = DATA_COVID.query.with_entities(DATA_COVID.libelle_commune).distinct()
     communes = [row.libelle_commune for row in query.all()]
-    return jsonify(communes)
+    return jsonify({"communes": communes})
     """
     result = DATA_COVID.query.all()
     data_covid_schema = DataCovidSchema(many=True)
