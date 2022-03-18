@@ -219,12 +219,17 @@ def get_covid_by_id(id):
 # TODO: Comment afficher toutes les communes uniques ?
 """SELECT DISTINCT libelle_commune FROM DATA_COVID;"""
 # Route qui permet de retourner toutes les communes 🐽 MARCHE PAS
+# afficher toutes les communes uniques ✅
 @app.route('/covid/getCommune/', methods=["GET"])
 def get_commune():
+    query = DATA_COVID.query.with_entities(DATA_COVID.libelle_commune).distinct()
+    communes = [row.libelle_commune for row in query.all()]
+    return jsonify(communes)
+    """
     result = DATA_COVID.query.all()
     data_covid_schema = DataCovidSchema(many=True)
     return jsonify(data_covid_schema.dump(result))
-
+    """
 
 # Route qui affiche les données pour une commune ✅
 @app.route('/covid/getCovidByCommune/<string:libelle_commune>/', methods=["GET"])
