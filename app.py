@@ -50,7 +50,7 @@ class DATA_COVID(db.Model):
     date_reference = db.Column(db.String, nullable=False)  # db.Column(db.Date, nullable=False)
     semaine_injection = db.Column(db.String, nullable=False)
     commune_residence = db.Column(db.Integer, nullable=False)
-    libelle_commune = db.Column(db.String(100), nullable=False)
+    libelle_commune = db.Column(db.String(100))
     population_carto = db.Column(db.Integer, nullable=False)
     classe_age = db.Column(db.String(100), nullable=False)
     libelle_classe_age = db.Column(db.String(100), nullable=False)
@@ -76,7 +76,7 @@ flask run
 """
 
 
-#A quoi sert cette classe ?
+# 🐽🐽🐽 A quoi sert cette classe ? 🐽🐽🐽
 class DataCovidSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = DATA_COVID
@@ -127,8 +127,6 @@ def register():
 
 
 # Connexion
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 # ---> EST CE QU'ON PEUT FAIRE APPARAITRE "quel user est connecté" DANS L'URL ? 🐽 genre login/?user=xxx
 @app.route('/login', methods=["GET", "POST"])
@@ -291,7 +289,6 @@ def get_info(info):
         results = [row.classe_age for row in query.all()]
 
     return jsonify({info_recherche: results})
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 
 
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
