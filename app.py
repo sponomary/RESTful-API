@@ -44,11 +44,13 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(1000))
 
 
-# /!\ /!\ les types ne correspondent pas à ceux dans la bdd /!\ /!\
 class DATA_COVID(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_reference = db.Column(db.String, nullable=False)  # db.Column(db.Date, nullable=False)
-    semaine_injection = db.Column(db.String, nullable=False)
+    date_reference = db.Column(db.Date, nullable=False) #%Y-%m-%d
+    semaine_injection = db.Column(db.String(100)) #db.Column(db.Date, nullable=False)
+    #/!\ 🐽🐽🐽 attention ce champ n'est pas au format date 🐽🐽🐽
+    # car ce format YYYY-WW n'est pas géré en SQL
+    # voir les 3 solutions possibles dans synchronisation_v2.py
     commune_residence = db.Column(db.Integer, nullable=False)
     libelle_commune = db.Column(db.String(100))
     population_carto = db.Column(db.Integer, nullable=False)
@@ -62,7 +64,7 @@ class DATA_COVID(db.Model):
     taux_termine = db.Column(db.Float)
     taux_cumu_1_inj = db.Column(db.Float)
     taux_cumu_termine = db.Column(db.Float)
-    date = db.Column(db.String(100))  # db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.Date, default=datetime.utcnow) #%Y-%m-%d
 
 
 # Line below only required once, when creating DB.
