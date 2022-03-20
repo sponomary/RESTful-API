@@ -18,6 +18,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from datetime import datetime
+import json
+from dataclasses import dataclass
 
 app = Flask(__name__)
 
@@ -44,6 +46,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(1000))
 
 
+@dataclass
 class DATA_COVID(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_reference = db.Column(db.Date, nullable=False) #%Y-%m-%d
@@ -66,6 +69,9 @@ class DATA_COVID(db.Model):
     taux_cumu_termine = db.Column(db.Float)
     date = db.Column(db.Date, default=datetime.utcnow) #%Y-%m-%d
 
+    def to_dict(self):
+        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+
 
 # Line below only required once, when creating DB.
 # db.create_all()
@@ -85,7 +91,6 @@ class DataCovidSchema(ma.SQLAlchemyAutoSchema):
 
     def __repr__(self):
         return '<Data %r>' % self.id
-
 
 
 
@@ -293,19 +298,27 @@ def get_info(info):
     return jsonify({info_recherche: results})
 
 
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# Objectif : faire des requêtes complexes plus
-# générales (genre chercher les communes et les semaines d'injections pour lesquelles plus de 10% des personnes de
-# plus de 75 ans ont terminé leur vaccination) NB. Dans le sujet il n'est pas demandé de faire des requêtes (même si
-# c'est bien)
-# UN PROBLEME : les requêtes sont effectuées en utilisant module "sqlite3"
-# je n'ai pas encore trouvé comment faire la même chose avec sqlalchemy ----> à améliorer
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-@app.route('/covid/data', methods=["GET"])
+# Route qui renvoie les résultats d'une requête (simple ou multiple)
+# Exemple : http://127.0.0.1:5000/covid/search?libelle_commune=ANTONY&classe_age=40-54
+@app.route('/covid/search', methods=["GET"])
 def data_filter():
-    import sqlite3
     query_parameters = request.args
+    fields = DATA_COVID.__table__.columns
+    results = db.session.query(DATA_COVID)
+    for k,v in query_parameters.items():
+        if k not in fields:
+            return {"error :": "404",
+                "message : ": "page not found"}
+        results = results.filter(getattr(DATA_COVID,k)==v)
+    results=results.all()
+    data_covid_schema = DataCovidSchema(many=True)    
+    return jsonify(data_covid_schema.dump(results))
+
+    """
+    Même programme mais en listant tous les paramètres !
+
     # récupérer les paramètres spécifiés par l'utilisateur et stocker dans un variable
+    query_parameters = request.args
     date_reference = query_parameters.get('date_reference')
     libelle_commune = query_parameters.get('libelle_commune')
     semaine_injection = query_parameters.get('semaine_injection')
@@ -314,39 +327,25 @@ def data_filter():
     classe_age = query_parameters.get('classe_age')
 
     # la requête de base en SQL, cette requête est ensuite complétée en fonction de paramètres données
-    query = "SELECT * FROM DATA_COVID WHERE"
-    to_filter = []
+    results = db.session.query(DATA_COVID)
+    print(type(results))
     if date_reference:
-        query += ' date_reference=? AND'
-        to_filter.append(date_reference)
+        results=results.filter(DATA_COVID.date_reference==date_reference)
     if libelle_commune:
-        query += ' libelle_commune=? AND'
-        to_filter.append(libelle_commune)
+        results=results.filter(DATA_COVID.libelle_commune==libelle_commune)
     if semaine_injection:
-        query += ' semaine_injection=? AND'
-        to_filter.append(semaine_injection)
+        results=results.filter(DATA_COVID.semaine_injection==semaine_injection)
     if commune_residence:
-        query += ' commune_residence=? AND'
-        to_filter.append(commune_residence)
+        results=results.filter(DATA_COVID.commune_residence==commune_residence)
     if population_carto:
-        query += ' population_carto=? AND'
-        to_filter.append(population_carto)
+        results=results.filter(DATA_COVID.population_carto==population_carto)
     if classe_age:
-        query += ' classe_age=? AND'
-        to_filter.append(classe_age)
-    # si aucun paramètre n'est donné, envoie message d'erreur
-    if not (date_reference or libelle_commune or semaine_injection or commune_residence or population_carto or classe_age ):
-        return {"error :": "404",
-                "message : ": "page not found"}
-    # enlever le dernier "AND" de la requête
-    query = query[:-4] + ';'
-    # connexion à la base de donnée
-    conn = sqlite3.connect('data/DataViewer.db')
-    cur = conn.cursor()
-    results = cur.execute(query,to_filter).fetchall()
-    return jsonify(results)
-
-
+        results=results.filter(DATA_COVID.classe_age==classe_age)
+        
+    results=results.all()
+    data_covid_schema = DataCovidSchema(many=True)    
+    return jsonify(data_covid_schema.dump(results))"""
+    
 
 
 # Route qui affiche les données pour une commune ✅
