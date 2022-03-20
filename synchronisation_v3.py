@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import http.client
 import sqlite3
 from app import *
+from pprint import pprint
 
 # url_datagouv = ("https://www.data.gouv.fr/fr/datasets/r/759b5ec2-a585-477a-9c62-7f74a7bdec3d")
 # url_ameli = "https://datavaccin-covid.ameli.fr/api/v2/catalog/datasets/donnees-de-vaccination-par-commune/exports/json?limit=-1&offset=0&timezone=UTC"
@@ -15,10 +16,10 @@ covid_json = "data/datacovid.json"
 covid_json = "data/datacovid_ameli.json"
 
 
-def call_api_covid(date_derniere_donnees):
+def call_api_covid(date):
     # Initialisation des différents éléments qui vont constituer notre URL/requête
     AMELI_ENDPOINT = "https://datavaccin-covid.ameli.fr/api/records/1.0/search/?dataset=donnees-de-vaccination-par-commune&q="  # nom du dataset à interroger
-    params = "date>2022-03-05&rows=1000"
+    params = "&rows=10000&refine.date={}".format(date)
     AMELI_ENDPOINT = AMELI_ENDPOINT + params
     AMELI_API_KEY = "e9a377dea52545f74ec78efe79513f8466bee6be8fead520c362a5ad"  # api_key pour se connecter à l'API
     headers = {"appid": AMELI_API_KEY}
@@ -31,10 +32,18 @@ def call_api_covid(date_derniere_donnees):
 # Mise à jour des données depuis data gouv
 def update_data_covid():
     # TODO : appliquer la requête avec SQLAlchemy pour extraire la dernière date de la BDD pour ensuite télécharger 
+    """ pas réussi à formuler la requête dans l'URL avec ">" : proposition : récupérer chaque jour les données avec comme paramètre date=today ou date=yesterday (car on ne sait pas à quelle heure datagouv met à jour ses données ?) """
     #  les données qui ont été rajoutées dans l'API Ameli 
-    date_derniere_donnees = "SELECT MAX(date) FROM DATA_COVID"  # chercher la dernière date dans la base de donnée
-    json_covid = call_api_covid(date_derniere_donnees)  # appel de la fonction d'interrogation de l'API
-    update_db(json_covid)  # mise à jour de la BD avec le JSON en retour
+    #date_derniere_donnees = "SELECT MAX(date) FROM DATA_COVID"  # chercher la dernière date dans la base de donnée
+    json_covid = call_api_covid(datetime.today().strftime('%Y-%m-%d'))  # appel de la fonction d'interrogation de l'API
+    # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+    # Test manuel (échec car Key error --> voir grouins ci-dessous)
+    json_covid = call_api_covid("2022-03-06")
+    try:
+        update_db(json_covid)  # mise à jour de la BD avec le JSON en retour
+    except Exception as e:
+        print(e)
+        pass
 
 
 def update_db(data):
@@ -49,10 +58,12 @@ def update_db(data):
     # en procédant de cette manière, n'influe pas sur les ajouts/suppressions/modifications des users
     # conn = sqlite3.connect(db)
     # c = conn.cursor()
-    # TODO adapter la structure de JSON à la structure de l'API : le JSON n'es pas la même tête quand téléchargé 
-    #  manuellement et accédé via l'API 😅 Aucune idée pourquoi, déjà dans le cas de l'API il faut descendre plus 
-    #  bas dans l'arborescence
-    for dic in data:
+    # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+    # TODO parcours du json ---> OK
+    #      gérer les KeyError ou se contenter de la synchronisation v2 
+    #      ---> c'est NUL quand on envoie la requête avec l'API ça ne renvoie pas les champs qui ont pour valeur null
+    for dic1 in data["records"]:
+        dic = dic1["fields"]
         date_reference = dic["date_reference"]
         semaine_injection = dic["semaine_injection"]
         commune_residence = dic["commune_residence"]
@@ -93,6 +104,7 @@ def update_db(data):
 # scheduler.add_job(update_data_covid(url_ameli, covid_json), 'interval', days=1)
 #  Démarrer le travail du planificateur de tâches programmé 
 # scheduler.start()
+pprint(call_api_covid("2022-03-06")["records"])
 update_data_covid()
 
 """ 
