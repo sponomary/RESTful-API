@@ -64,8 +64,9 @@ def update_db(data):
     #      ---> c'est NUL quand on envoie la requête avec l'API ça ne renvoie pas les champs qui ont pour valeur null
     for dic1 in data["records"]:
         dic = dic1["fields"]
-        date_reference = dic["date_reference"]
+        date_reference = datetime.strptime(dic["date_reference"], "%Y-%m-%d")
         semaine_injection = dic["semaine_injection"]
+        #/!\ attention ce champ n'est pas au format date car ce format n'est pas géré en SQL : voir 3 solutions cf synchronisation_v2
         commune_residence = dic["commune_residence"]
         libelle_commune = dic["libelle_commune"]
         population_carto = dic["population_carto"]
@@ -79,7 +80,7 @@ def update_db(data):
         taux_termine = dic["taux_termine"]
         taux_cumu_1_inj = dic["taux_cumu_1_inj"]
         taux_cumu_termine = dic["taux_cumu_termine"]
-        date = dic["date"]
+        date = datetime.strptime(dic["date"], "%Y-%m-%d")
 
         data = DATA_COVID(date_reference=date_reference,
                           semaine_injection=semaine_injection,
