@@ -291,10 +291,60 @@ def get_info(info):
     return jsonify({info_recherche: results})
 
 
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽 Objectif : faire des requêtes complexes plus
+# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+# Objectif : faire des requêtes complexes plus
 # générales (genre chercher les communes et les semaines d'injections pour lesquelles plus de 10% des personnes de
 # plus de 75 ans ont terminé leur vaccination) NB. Dans le sujet il n'est pas demandé de faire des requêtes (même si
-# c'est bien) 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+# c'est bien)
+# UN PROBLEME : les requêtes sont effectuées en utilisant module "sqlite3"
+# je n'ai pas encore trouvé comment faire la même chose avec sqlalchemy ----> à améliorer
+# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+@app.route('/covid/data', methods=["GET"])
+def data_filter():
+    import sqlite3
+    query_parameters = request.args
+    # récupérer les paramètres spécifiés par l'utilisateur et stocker dans un variable
+    date_reference = query_parameters.get('date_reference')
+    libelle_commune = query_parameters.get('libelle_commune')
+    semaine_injection = query_parameters.get('semaine_injection')
+    commune_residence = query_parameters.get('commune_residence')
+    population_carto = query_parameters.get('population_carto')
+    classe_age = query_parameters.get('classe_age')
+
+    # la requête de base en SQL, cette requête est ensuite complétée en fonction de paramètres données
+    query = "SELECT * FROM DATA_COVID WHERE"
+    to_filter = []
+    if date_reference:
+        query += ' date_reference=? AND'
+        to_filter.append(date_reference)
+    if libelle_commune:
+        query += ' libelle_commune=? AND'
+        to_filter.append(libelle_commune)
+    if semaine_injection:
+        query += ' semaine_injection=? AND'
+        to_filter.append(semaine_injection)
+    if commune_residence:
+        query += ' commune_residence=? AND'
+        to_filter.append(commune_residence)
+    if population_carto:
+        query += ' population_carto=? AND'
+        to_filter.append(population_carto)
+    if classe_age:
+        query += ' classe_age=? AND'
+        to_filter.append(classe_age)
+    # si aucun paramètre n'est donné, envoie message d'erreur
+    if not (date_reference or libelle_commune or semaine_injection or commune_residence or population_carto or classe_age ):
+        return {"error :": "404",
+                "message : ": "page not found"}
+    # enlever le dernier "AND" de la requête
+    query = query[:-4] + ';'
+    # connexion à la base de donnée
+    conn = sqlite3.connect('data/DataViewer.db')
+    cur = conn.cursor()
+    results = cur.execute(query,to_filter).fetchall()
+    return jsonify(results)
+
+
 
 
 # Route qui affiche les données pour une commune ✅
