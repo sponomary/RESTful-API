@@ -291,10 +291,10 @@ def get_info(info):
     return jsonify({info_recherche: results})
 
 
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-#Objectif : faire des requêtes complexes plus générales (genre chercher les communes et les semaines d'injections pour lesquelles plus de 10% des personnes de plus de 75 ans ont terminé leur vaccination)
-# NB. Dans le sujet il n'est pas demandé de faire des requêtes (même si c'est bien)
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽 Objectif : faire des requêtes complexes plus
+# générales (genre chercher les communes et les semaines d'injections pour lesquelles plus de 10% des personnes de
+# plus de 75 ans ont terminé leur vaccination) NB. Dans le sujet il n'est pas demandé de faire des requêtes (même si
+# c'est bien) 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 
 
 # Route qui affiche les données pour une commune ✅
