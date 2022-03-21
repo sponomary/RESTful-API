@@ -20,6 +20,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from flask_apscheduler import APScheduler #ajouter dans les requirements
 from datetime import datetime
 from dataclasses import dataclass
+import synchronisation_v2 as synchro
 
 app = Flask(__name__)
 
