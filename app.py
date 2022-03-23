@@ -11,12 +11,11 @@
 __version__ = "0.6"
 
 from flask import Flask
-from flask_login import LoginManager
 from flask_apscheduler import APScheduler #ajouter dans les requirements
-import synchronisation as synchro
+#import synchronisation as synchro
 from resources.user import users
 from resources.covid import covid
-from models.db import initialize_db, initialize_marshmallow
+from models.db import initialize_db, initialize_marshmallow,login_manager
 
 app = Flask(__name__)
 
@@ -24,7 +23,7 @@ app = Flask(__name__)
 app.register_blueprint(users)
 app.register_blueprint(covid, url_prefix='/covid')
 
-app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/DataViewer.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.update({'SCHEDULER_API_ENABLED': True})
@@ -34,7 +33,8 @@ initialize_marshmallow(app)
 
 """
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# PARTIE SCHEDULER -> voir ligne 49
+# PARTIE SCHEDULER -> voir ligne 49  
+# On peut peut-être déplacer cette partie dans le fichier utils.py ? 
 
 # Créer un objet Scheduler pour une tâche programmée
 scheduler=APScheduler()
@@ -69,8 +69,7 @@ def home():
 """
 PAS ENCORE D'IDEE QUOI FAIRE AVEC CE BOUT DE CODE
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-login_manager = LoginManager()
-login_manager.init_app(app)
+login_manager(app)
 
 @login_manager.user_loader
 def load_user(user_id):
