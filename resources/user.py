@@ -1,19 +1,21 @@
 from flask import Blueprint
 from models.user import User
-from flask import Flask, render_template, request, url_for, redirect, flash, send_from_directory, jsonify
+from flask_login import logout_user
+from flask import request, jsonify, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user, current_user, logout_user
+import jwt
+from datetime import datetime, timedelta
 
 
 users = Blueprint('users', __name__)
 
 
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# REFAIRE TOUS LES RETURN SANS LE FRONT
-# ET FINIR TRUC DU TOKEN
+# REFAIRE TOUS LES RETURN SANS LE FRONT ✅
+# ET FINIR TRUC DU TOKEN ✅
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 
-
+"""
 # Création d'un compte
 @users.route('/register', methods=["GET", "POST"])
 def register():
@@ -37,7 +39,7 @@ def register():
             name=request.form.get('name'),
             password=hash_and_salted_password
         )
-        User.save_to_db(new_user)
+        User.save_user(new_user)
 
         # Log in and authenticate user after adding details to database.
         login_user(new_user)
@@ -46,8 +48,8 @@ def register():
 
     return "RETURN CREATION DE COMPTE + LOGIN A FAIRE" # 🐽🐽🐽🐽🐽
     return render_template("register.html", logged_in=current_user.is_authenticated)
-
-
+"""
+"""
 # Connexion
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 # ---> EST CE QU'ON PEUT FAIRE APPARAITRE "quel user est connecté" DANS L'URL comme a fait seigneur ? 🐽 genre login/?user=xxx
@@ -81,6 +83,70 @@ def login():
             return "RETURN LOGIN A FAIRE" # 🐽🐽🐽🐽🐽
 
     return render_template("login.html", logged_in=current_user.is_authenticated)
+"""
+
+# Création d'un compte
+@users.route('/register', methods =['POST'])
+def register():
+    # creates a dictionary of the form data
+    data = request.form
+    # gets name, email and password
+    name, email = data.get('name'), data.get('email')
+    password = data.get('password')
+
+    # checking for existing user
+    user = User.query.filter_by(email = email).first()
+    if not user:
+        # database ORM object
+        user = User(
+            email=email,
+            name=name,
+            password=generate_password_hash(password)
+        )
+        # insert user in db
+        user.save_user()
+        return make_response('Successfully registered.', 201)
+    else:
+        # returns 202 if user already exists
+        return make_response('User already exists. Please Log in.', 202)
+
+
+# Connexion
+@users.route('/login', methods =['POST'])
+def login():
+    # creates dictionary of form data
+    auth = request.form
+    if not auth or not auth.get('email') or not auth.get('password'):
+        # returns 401 if any email or / and password is missing
+        return make_response(
+            'Could not verify',
+            401,
+            {'WWW-Authenticate' : 'Basic realm ="Login required !!"'}
+        )
+    user = User.query.filter_by(email = auth.get('email')).first()
+    if not user:
+        # returns 401 if user does not exist
+        return make_response(
+            'Could not verify',
+            401,
+            {'WWW-Authenticate' : 'Basic realm ="User does not exist !!"'}
+        )
+
+    if check_password_hash(user.password, auth.get('password')):
+        # generates the JWT Token
+        token = jwt.encode({
+            'email': user.email,
+            'exp' : datetime.utcnow() + timedelta(minutes = 30)
+        }, "secret_key_data_covid")
+
+        return make_response(jsonify({'token' : token.decode('UTF-8')}), 201)
+    # returns 403 if password is wrong
+    return make_response(
+        'Could not verify',
+        403,
+        {'WWW-Authenticate' : 'Basic realm ="Wrong Password !!"'}
+    )
+
 
 
 # Déconnexion
