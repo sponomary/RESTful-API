@@ -12,6 +12,7 @@ covid = Blueprint('covid', __name__)
 # RENVOIE UNE ERREUR Maximum response size reached
 # Route qui retourne toutes les données covid ✅
 @covid.route('/', methods=["GET"])
+@token_required
 def get_all_covid():
     result = DataCovidModel.query.all()
     data_covid_schema = DataCovidSchema(many=True)
@@ -49,6 +50,7 @@ def update_covid(id):
 
 # Route qui supprime une donnée covid ✅
 @covid.route('/<int:id>/', methods=["DELETE"])
+@token_required
 def delete_covid(id):
     data_covid = DataCovidModel.query.get(id)
     data_covid_schema = DataCovidSchema()
