@@ -1,4 +1,4 @@
-from .db import db,ma
+from .db import db, ma
 from datetime import datetime
 
 
@@ -6,9 +6,9 @@ class DataCovidModel(db.Model):
     __tablename__ = 'DATA_COVID'
 
     id = db.Column(db.Integer, primary_key=True)
-    date_reference = db.Column(db.Date, nullable=False) #%Y-%m-%d
-    semaine_injection = db.Column(db.String(100), nullable=False) 
-    #/!\ 🐽🐽🐽 attention ce champ n'est pas au format date 🐽🐽🐽
+    date_reference = db.Column(db.Date)  # %Y-%m-%d
+    semaine_injection = db.Column(db.String(100))
+    # /!\ 🐽🐽🐽 attention ce champ n'est pas au format date 🐽🐽🐽
     # car ce format YYYY-WW n'est pas géré en SQL
     # 4 solutions possibles :
     # - on transforme en int et on enlève le tiret
@@ -16,11 +16,11 @@ class DataCovidModel(db.Model):
     # - on le divise en 2 colonnes, 1 int pour l'année + 1 int pour la semaine
     # - on le transforme en format  vraie date YYYY-MM-DD avec le code suivant (ça met le dimanche de la semaine de numéro W) 
     # datetime.strptime(dic["semaine_injection"] + ' 0', "%Y-%W %w")
-    commune_residence = db.Column(db.Integer, nullable=False)
+    commune_residence = db.Column(db.Integer)
     libelle_commune = db.Column(db.String(100))
-    population_carto = db.Column(db.Integer, nullable=False)
-    classe_age = db.Column(db.String(100), nullable=False)
-    libelle_classe_age = db.Column(db.String(100), nullable=False)
+    population_carto = db.Column(db.Integer)
+    classe_age = db.Column(db.String(100))
+    libelle_classe_age = db.Column(db.String(100))
     effectif_1_inj = db.Column(db.Integer)
     effectif_termine = db.Column(db.Integer)
     effectif_cumu_1_inj = db.Column(db.Integer)
@@ -29,11 +29,11 @@ class DataCovidModel(db.Model):
     taux_termine = db.Column(db.Float)
     taux_cumu_1_inj = db.Column(db.Float)
     taux_cumu_termine = db.Column(db.Float)
-    date = db.Column(db.Date, default=datetime.utcnow) #%Y-%m-%d
+    date = db.Column(db.Date, default=datetime.utcnow)  # %Y-%m-%d
 
-    def __init__(self, date_reference,semaine_injection,commune_residence,libelle_commune,population_carto,
-                 classe_age,libelle_classe_age,effectif_1_inj,effectif_termine,effectif_cumu_1_inj,
-                 effectif_cumu_termine,taux_1_inj,taux_termine,taux_cumu_1_inj,taux_cumu_termine,date):
+    def __init__(self, date_reference, semaine_injection, commune_residence, libelle_commune, population_carto,
+                 classe_age, libelle_classe_age, effectif_1_inj, effectif_termine, effectif_cumu_1_inj,
+                 effectif_cumu_termine, taux_1_inj, taux_termine, taux_cumu_1_inj, taux_cumu_termine, date):
         self.date_reference = date_reference
         self.semaine_injection = semaine_injection
         self.commune_residence = commune_residence
@@ -51,14 +51,13 @@ class DataCovidModel(db.Model):
         self.taux_cumu_termine = taux_cumu_termine
         self.date = date
 
-
     @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
 
-    def update_data(self, date_reference,semaine_injection,commune_residence,libelle_commune,population_carto,
-                    classe_age,libelle_classe_age,effectif_1_inj,effectif_termine,effectif_cumu_1_inj,
-                    effectif_cumu_termine,taux_1_inj,taux_termine,taux_cumu_1_inj,taux_cumu_termine,date):
+    def update_data(self, date_reference, semaine_injection, commune_residence, libelle_commune, population_carto,
+                    classe_age, libelle_classe_age, effectif_1_inj, effectif_termine, effectif_cumu_1_inj,
+                    effectif_cumu_termine, taux_1_inj, taux_termine, taux_cumu_1_inj, taux_cumu_termine, date):
         data = DataCovidModel(date_reference=date_reference, semaine_injection=semaine_injection,
                               commune_residence=commune_residence,
                               libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
