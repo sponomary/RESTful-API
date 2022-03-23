@@ -13,7 +13,7 @@ __version__ = "0.6"
 from flask import Flask
 from flask_login import LoginManager
 from flask_apscheduler import APScheduler #ajouter dans les requirements
-# 🐽🐽🐽 importer ici le nouveau script de synchro
+import synchronisation as synchro
 from resources.user import users
 from resources.covid import covid
 from models.db import initialize_db, initialize_marshmallow
@@ -34,7 +34,7 @@ initialize_marshmallow(app)
 
 """
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# PARTIE SCHEDULER -> changer la fonction job pour mettre la v4 si on passe par API
+# PARTIE SCHEDULER -> voir ligne 49
 
 # Créer un objet Scheduler pour une tâche programmée
 scheduler=APScheduler()
@@ -44,7 +44,13 @@ scheduler.init_app(app)
 @scheduler.task('interval', id='do_job', days=1)
 def job():
     print("Synchronisation...")
-    synchro.update_db(synchro.update_data_covid("https://datavaccin-covid.ameli.fr/api/v2/catalog/datasets/donnees-de-vaccination-par-commune/exports/json?limit=-1&offset=0&timezone=UTC", "data/donnees-de-vaccination-par-commune.json")) #update_db(update_data_covid(url_ameli, covid_json))
+    # 🐽🐽🐽 Ancien code avec V2
+    #synchro.update_db(synchro.update_data_covid("https://datavaccin-covid.ameli.fr/api/v2/catalog/datasets/donnees-de-vaccination-par-commune/exports/json?limit=-1&offset=0&timezone=UTC", "data/donnees-de-vaccination-par-commune.json")) #update_db(update_data_covid(url_ameli, covid_json))
+    # 🐽🐽🐽 ajouter un test sur la BDD 🐽🐽🐽
+    # Si la BDD est vide
+    synchro.init_full_bdd()
+    # Pour mettre à jour la base existante
+    synchro.differ_maj_bdd()
     print("...synchronisation terminée")
 
 # Démarrer le travail du planificateur de tâches programmé 
