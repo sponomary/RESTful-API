@@ -12,7 +12,7 @@
 # resources.user : logout --> toujours nécessaire ?
 # nom du serveur ✅
 # relier synchro et apscheduler
-# resources.covid : finir PATCH et POST, (les GET et DELETE sont ok) / dates + semaine_injection
+# resources.covid : finir PATCH et POST ✅ / dates ✅ + semaine_injection (on laisse en string ou on change ce champ ?)
 # Heroku (@sasha)
 # que faire de ce code ?
 """
@@ -23,7 +23,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 """
 # doc de notre code
-# doc postman
+# doc postman (✅ si ça vous va)
 # readme
 # equipe.txt
 # page d'accueil, on met un truc comme les filles ?

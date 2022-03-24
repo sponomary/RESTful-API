@@ -5,7 +5,6 @@ from models.user import User
 
 # decorator for verifying the JWT
 
-
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -13,7 +12,7 @@ def token_required(f):
         # jwt is passed in the request header
         if 'x-access-token' in request.headers:
             token = request.headers['x-access-token']
-        # return 401 if token is not passed
+        # Code 401, token manquant
         if not token:
             return jsonify({'message': 'Token is missing !!'}), 401
         try:

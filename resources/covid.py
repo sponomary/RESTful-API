@@ -1,8 +1,10 @@
+from email.policy import default
 from flask import Blueprint
 from models.covid import DataCovidModel, DataCovidSchema
 from models.db import db
 from flask import request, jsonify
 from lib.utils import token_required
+from datetime import datetime
 
 
 covid = Blueprint('covid', __name__)
@@ -16,15 +18,12 @@ def get_all_covid():
     return jsonify(data_covid_schema.dump(result))
 
 
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# pas réussi à faire marcher non plus (???)
-# Erreur : sqlalchemy.exc.StatementError: (builtins.TypeError) SQLite Date type only accepts Python date objects as input.
-# Route qui met à jour une donnée covid 
+# Route qui met à jour une donnée covid ✅
 @covid.route('/<int:id>/', methods=["PATCH"])
 @token_required  # nécessite une connexion
 def update_covid(id):
     data_covid = DataCovidModel.query.get(id)
-    data_covid.date_reference = request.json.get('date_reference', '')
+    data_covid.date_reference = datetime.strptime(request.json.get('date_reference', ''), "%Y-%m-%d")
     data_covid.semaine_injection = request.json.get('semaine_injection', '')
     data_covid.commune_residence = request.json.get('commune_residence', '')
     data_covid.libelle_commune = request.json.get('libelle_commune', '')
@@ -39,7 +38,7 @@ def update_covid(id):
     data_covid.taux_termine = request.json.get('taux_termine', '')
     data_covid.taux_cumu_1_inj = request.json.get('taux_cumu_1_inj', '')
     data_covid.taux_cumu_termine = request.json.get('taux_cumu_termine', '')
-    data_covid.date = request.json.get('date', '')
+    data_covid.date = datetime.utcnow()
 
     data_covid.save_to_db()
     data_covid_schema = DataCovidSchema()
@@ -56,13 +55,11 @@ def delete_covid(id):
     return data_covid_schema.jsonify(data_covid)
 
 
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# Erreur : sqlalchemy.exc.StatementError: (builtins.TypeError) SQLite Date type only accepts Python date objects as input.
-# Route qui crée une nouvelle donnée covid
-@covid.route('/edit', methods=['POST'])
+# Route qui crée une nouvelle donnée covid ✅
+@covid.route('/', methods=['POST'])
 @token_required  # nécessite une connexion
 def create_covid():
-    date_reference = request.json.get('date_reference', '')
+    date_reference = datetime.strptime(request.json.get('date_reference', ''), "%Y-%m-%d")
     semaine_injection = request.json.get('semaine_injection', '')
     commune_residence = request.json.get('commune_residence', '')
     libelle_commune = request.json.get('libelle_commune', '')
@@ -77,7 +74,6 @@ def create_covid():
     taux_termine = request.json.get('taux_termine', '')
     taux_cumu_1_inj = request.json.get('taux_cumu_1_inj', '')
     taux_cumu_termine = request.json.get('taux_cumu_termine', '')
-    date = request.json.get('date', '')
 
     data = DataCovidModel(date_reference=date_reference, semaine_injection=semaine_injection,
                       commune_residence=commune_residence,
@@ -86,7 +82,8 @@ def create_covid():
                       effectif_termine=effectif_termine,
                       effectif_cumu_1_inj=effectif_cumu_1_inj, effectif_cumu_termine=effectif_cumu_termine,
                       taux_1_inj=taux_1_inj, taux_termine=taux_termine, taux_cumu_1_inj=taux_cumu_1_inj,
-                      taux_cumu_termine=taux_cumu_termine, date=date)
+                      taux_cumu_termine=taux_cumu_termine,
+                      date=datetime.utcnow())
 
     data.save_to_db()
     data_covid_schema = DataCovidSchema()
