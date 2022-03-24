@@ -1,14 +1,14 @@
-## TECHNIQUES WEB - PROJET 1
+# TECHNIQUES WEB - PROJET 1
 
 Ce projet a été réalisé dans le cadre du cours Technique Web dirigé par M. Elvis Mboning, du Master Traitement Automatique des Langues de l'INALCO.
 
 Groupe 1 : Alexandra PONOMAREVA, Lufei LIU, Elise LINCKER
 
-# Description du projet
+## Description du projet
 
 Le projet consiste en la mise en place d'une application Back-End pour l'entreprise DataViewer, pour répondre à l'appel à projet du gouvernement suivant : ref : 30232RD3/CO/EDU/2022, pour traiter et rendre disponible des données publiques sur la Covid-19 afin de mieux informer les populations sur l’évolution de la pandémie.
 
-# Objectif du projet :
+## Objectif du projet :
 
 Cette application Back-End est développée avec la librairie Python Flask et déployée sur Heroku. Les données du client sont accessibles sur Postman.
 
