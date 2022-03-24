@@ -1,8 +1,6 @@
 from .db import db
 from flask_login import UserMixin
 
-# Création de la table User dans la base de données
-
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,9 +14,15 @@ class User(UserMixin, db.Model):
         self.password = password
 
     def save_user(self):
+        """
+        Ajout de l'objet User à la BDD
+        """
         db.session.add(self)
         db.session.commit()
 
     def delete_user(self):
+        """
+        Suppression de l'objet User de la BDD
+        """
         db.session.delete(self)
         db.session.commit()
