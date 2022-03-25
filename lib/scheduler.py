@@ -3,12 +3,13 @@ from .synchronisation import init_full_bdd, differ_maj_bdd
 from models.covid import DataCovidModel
 from models.db import db
 
-
 scheduler = APScheduler()  # créer un objet Scheduler pour une tâche programmée
+
 
 # Ajouter une tâche programmée à l'ordonnanceur (mise à jour des données depuis datagouv + mise à jour de la BDD)
 def start_scheduler(app):
     scheduler.init_app(app)
+
     @scheduler.task('interval', id='do_job', days=1)
     def job():
         print("Synchronisation...")
@@ -20,4 +21,5 @@ def start_scheduler(app):
             else:
                 differ_maj_bdd()
         print("...synchronisation terminée")
+
     scheduler.start()

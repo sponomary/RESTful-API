@@ -16,10 +16,9 @@ from resources.covid import covid
 from models.db import initialize_db, initialize_marshmallow
 from lib.scheduler import start_scheduler
 
-
 app = Flask(__name__)
 
-#Blueprint
+# Blueprint
 app.register_blueprint(users)
 app.register_blueprint(covid, url_prefix='/covid')
 
@@ -45,5 +44,5 @@ def readme():
     
 
 if __name__ == "__main__":
-    #app.run(host='127.0.0.1', port=5001)
+    # app.run(host='127.0.0.1', port=5000)
     app.run()
