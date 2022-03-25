@@ -2,15 +2,9 @@
 # coding: utf-8
 
 import json
-from datetime import datetime
 import requests
-from app import *
 from sqlalchemy import desc
-from models.covid import DataCovidModel, DataCovidSchema
-from models.db import db, ma #on utilise ma ici ? 🐽
-from resources.user import * #? 🐽
-from resources.covid import * #? 🐽
-
+from resources.covid import *  # ? 🐽
 
 # URL permanent pour import total dans une BDD vide
 URL_PERMANENT = "https://www.data.gouv.fr/fr/datasets/r/759b5ec2-a585-477a-9c62-7f74a7bdec3d"
@@ -154,15 +148,15 @@ def update_db(dic):
     date = get_champs_date(dic, "date")
 
     data = DataCovidModel(date_reference=date_reference,
-                      semaine_injection=semaine_injection,
-                      commune_residence=commune_residence,
-                      libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
-                      libelle_classe_age=libelle_classe_age, effectif_1_inj=effectif_1_inj,
-                      effectif_termine=effectif_termine,
-                      effectif_cumu_1_inj=effectif_cumu_1_inj, effectif_cumu_termine=effectif_cumu_termine,
-                      taux_1_inj=taux_1_inj, taux_termine=taux_termine, taux_cumu_1_inj=taux_cumu_1_inj,
-                      taux_cumu_termine=taux_cumu_termine,
-                      date=date)
+                          semaine_injection=semaine_injection,
+                          commune_residence=commune_residence,
+                          libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
+                          libelle_classe_age=libelle_classe_age, effectif_1_inj=effectif_1_inj,
+                          effectif_termine=effectif_termine,
+                          effectif_cumu_1_inj=effectif_cumu_1_inj, effectif_cumu_termine=effectif_cumu_termine,
+                          taux_1_inj=taux_1_inj, taux_termine=taux_termine, taux_cumu_1_inj=taux_cumu_1_inj,
+                          taux_cumu_termine=taux_cumu_termine,
+                          date=date)
 
     db.session.add(data)
     db.session.commit()
@@ -174,4 +168,4 @@ def update_db(dic):
 # init_full_bdd()
 
 # Pour mettre à jour la base existante
-differ_maj_bdd()
+# differ_maj_bdd()

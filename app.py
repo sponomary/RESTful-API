@@ -36,14 +36,14 @@ __version__ = "0.6"
 
 from flask import Flask
 from flask_apscheduler import APScheduler
-#import lib.synchronisation as synchro
+# import lib.synchronisation as synchro
 from resources.user import users
 from resources.covid import covid
-from models.db import initialize_db, initialize_marshmallow,login_manager
+from models.db import initialize_db, initialize_marshmallow, login_manager
 
 app = Flask(__name__)
 
-#Blueprint
+# Blueprint
 app.register_blueprint(users)
 app.register_blueprint(covid, url_prefix='/covid')
 
@@ -66,22 +66,23 @@ RENVOIE UNE ERREUR lors de l'importation du script synchronisation
 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 """
 # Créer un objet Scheduler pour une tâche programmée
-scheduler=APScheduler()
+scheduler = APScheduler()
 scheduler.init_app(app)
 
+
 # Ajouter une tâche programmée à l'ordonnanceur (mise à jour des données depuis datagouv + mise à jour de base de données)
-#@scheduler.task('interval', id='do_job', days=1)
+# @scheduler.task('interval', id='do_job', days=1)
 def job():
     print("Synchronisation...")
     # Si la BDD est vide 🐽🐽🐽🐽🐽🐽
     # synchro.init_full_bdd()
     # Pour mettre à jour la base existante
-    #synchro.differ_maj_bdd()
+    # synchro.differ_maj_bdd()
     print("...synchronisation terminée")
 
-# Démarrer le travail du planificateur de tâches programmé 
-scheduler.start()
 
+# Démarrer le travail du planificateur de tâches programmé
+scheduler.start()
 
 
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
