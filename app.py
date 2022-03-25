@@ -61,7 +61,7 @@ start_scheduler(app)
 @app.route('/')
 def home():
     return "<h1>Groupe 1 : Alexandra PONOMAREVA, Lufei LIU, Elise LINCKER</h1>" \
-           "<a href='https://documenter.getpostman.com/view/16846441/TzscomUA'>Lire la Documentation</a>"
+           "<a href='https://documenter.getpostman.com/view/16846441/UVyn1JaA'>Lire la Documentation</a>"
 
 
 if __name__ == "__main__":
