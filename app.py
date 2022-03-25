@@ -40,10 +40,9 @@ from resources.covid import covid
 from models.db import initialize_db, initialize_marshmallow
 from lib.scheduler import start_scheduler
 
-
 app = Flask(__name__)
 
-#Blueprint
+# Blueprint
 app.register_blueprint(users)
 app.register_blueprint(covid, url_prefix='/covid')
 
@@ -58,15 +57,13 @@ initialize_marshmallow(app)
 start_scheduler(app)
 
 
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# juste copié Noélie pour la route de base - peut être ajouter un lien vers la doc ou quoi ?
-# 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 # Page d'accueil
 @app.route('/')
 def home():
-    return "<h1>Groupe 1 : Alexandra PONOMAREVA, Lufei LIU, Elise LINCKER</h1>"
+    return "<h1>Groupe 1 : Alexandra PONOMAREVA, Lufei LIU, Elise LINCKER</h1>" \
+           "<a href='https://documenter.getpostman.com/view/16846441/TzscomUA'>Lire la Documentation</a>"
 
 
 if __name__ == "__main__":
-    #app.run(host='127.0.0.1', port=5001)
+    # app.run(host='127.0.0.1', port=5000)
     app.run()

@@ -6,7 +6,7 @@ Groupe 1 : Alexandra PONOMAREVA, Lufei LIU, Elise LINCKER
 
 ## Description du projet
 
-Le projet consiste en la mise en place d'une application Back-End pour l'entreprise DataViewer, pour répondre à l'appel à projet du gouvernement suivant : ref : 30232RD3/CO/EDU/2022, pour traiter et rendre disponible des données publiques sur la Covid-19 afin de mieux informer les populations sur l’évolution de la pandémie.
+Le projet consiste en la mise en place d'une application Back-End pour l'entreprise *DataViewer*, pour répondre à l'appel à projet du gouvernement suivant : ref : 30232RD3/CO/EDU/2022, pour traiter et rendre disponible des données publiques sur la Covid-19 afin de mieux informer les populations sur l’évolution de la pandémie.
 
 ## Objectif du projet :
 
