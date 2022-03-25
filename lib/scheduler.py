@@ -1,5 +1,5 @@
 from flask_apscheduler import APScheduler
-from synchronisation import init_full_bdd, differ_maj_bdd
+from .synchronisation import init_full_bdd, differ_maj_bdd
 from models.covid import DataCovidModel
 from models.db import db
 
