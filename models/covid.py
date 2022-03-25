@@ -8,14 +8,6 @@ class DataCovidModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_reference = db.Column(db.Date)  # %Y-%m-%d
     semaine_injection = db.Column(db.String(100))
-    # /!\ 🐽🐽🐽 attention ce champ n'est pas au format date 🐽🐽🐽
-    # car ce format YYYY-WW n'est pas géré en SQL
-    # 4 solutions possibles :
-    # - on transforme en int et on enlève le tiret
-    # - on laisse en String 
-    # - on le divise en 2 colonnes, 1 int pour l'année + 1 int pour la semaine
-    # - on le transforme en format  vraie date YYYY-MM-DD avec le code suivant (ça met le dimanche de la semaine de numéro W) 
-    # datetime.strptime(dic["semaine_injection"] + ' 0', "%Y-%W %w")
     commune_residence = db.Column(db.Integer)
     libelle_commune = db.Column(db.String(100))
     population_carto = db.Column(db.Integer)
