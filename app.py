@@ -38,10 +38,11 @@ start_scheduler(app)
 def home():
     return redirect(url_for('readme'))
 
+
 @app.route('/readme')
 def readme():
     return render_template('README.html')
-    
+
 
 if __name__ == "__main__":
     # app.run(host='127.0.0.1', port=5000)
