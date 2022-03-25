@@ -8,33 +8,9 @@
     :copyright: © 2022 by Élise & Lufei & Alexandra.
 """
 
-# TODO :
-# models : ok ✅
-# resources.user : ok sauf logout --> toujours nécessaire ?
-# resources.covid : tout marche ✅ 
-# + semaine_injection (on laisse en string ou on change ce champ ?)
-# nom du serveur ✅
-# relier synchro et scheduler ✅ (initialisation ok si la table existe mais est vide / vérifier que ça synchro bien ?)
-# Heroku (@sasha)
-# que faire de ce code ?
-"""
-login_manager(app)
+__version__ = "1.0"
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-"""
-# doc de notre code
-# doc postman (✅ si ça vous va)
-# readme
-# equipe.txt
-# page d'accueil, on met un truc comme les filles ?  peut être ajouter un lien vers la doc ou quoi ?
-# vérifier les requirements
-# quelque chose d'autre ?
-
-__version__ = "0.6"
-
-from flask import Flask
+from flask import Flask, redirect, url_for, render_template
 from resources.user import users
 from resources.covid import covid
 from models.db import initialize_db, initialize_marshmallow
@@ -60,9 +36,12 @@ start_scheduler(app)
 # Page d'accueil
 @app.route('/')
 def home():
-    return "<h1>Groupe 1 : Elise LINCKER, Lufei LIU, Alexandra PONOMAREVA</h1>" \
-           "<a href='https://documenter.getpostman.com/view/16846441/UVyn1JaA'>Lire la Documentation</a>"
+    return redirect(url_for('readme'))
 
+@app.route('/readme')
+def readme():
+    return render_template('README.html')
+    
 
 if __name__ == "__main__":
     # app.run(host='127.0.0.1', port=5000)
