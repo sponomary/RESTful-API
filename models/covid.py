@@ -51,22 +51,6 @@ class DataCovidModel(db.Model):
         self.taux_cumu_termine = taux_cumu_termine
         self.date = date
 
-    @classmethod
-    def find_by_name(cls, name):
-        return cls.query.filter_by(name=name).first()
-
-    def update_data(self, date_reference, semaine_injection, commune_residence, libelle_commune, population_carto,
-                    classe_age, libelle_classe_age, effectif_1_inj, effectif_termine, effectif_cumu_1_inj,
-                    effectif_cumu_termine, taux_1_inj, taux_termine, taux_cumu_1_inj, taux_cumu_termine, date):
-        data = DataCovidModel(date_reference=date_reference, semaine_injection=semaine_injection,
-                              commune_residence=commune_residence,
-                              libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
-                              libelle_classe_age=libelle_classe_age, effectif_1_inj=effectif_1_inj,
-                              effectif_termine=effectif_termine,
-                              effectif_cumu_1_inj=effectif_cumu_1_inj, effectif_cumu_termine=effectif_cumu_termine,
-                              taux_1_inj=taux_1_inj, taux_termine=taux_termine, taux_cumu_1_inj=taux_cumu_1_inj,
-                              taux_cumu_termine=taux_cumu_termine, date=date)
-        return data
 
     def save_to_db(self):
         db.session.add(self)

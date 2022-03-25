@@ -6,11 +6,11 @@ from datetime import datetime
 import requests
 from app import *
 from sqlalchemy import desc
-from models.db import *
-
 from models.covid import DataCovidModel, DataCovidSchema
-from models.db import db
-"""D'ailleurs ça s'appelle DataCovidModel maintenant"""
+from models.db import db, ma #on utilise ma ici ? 🐽
+from resources.user import * #? 🐽
+from resources.covid import * #? 🐽
+
 
 # URL permanent pour import total dans une BDD vide
 URL_PERMANENT = "https://www.data.gouv.fr/fr/datasets/r/759b5ec2-a585-477a-9c62-7f74a7bdec3d"
@@ -39,7 +39,6 @@ def init_via_url_permanente():
 def init_full_bdd():
     """
     Initialisation complète de la BDD à partir des données récupérées via lien permanent du site de data.gouv.fr.
-    (~ peut être de plus au moins long, 2 minutes sur ma machine)
     """
     json_covid = init_via_url_permanente()
 
@@ -51,13 +50,13 @@ def init_full_bdd():
         pass
 
 
-def read_json_url_data_gouv(donnes):
+def read_json_url_data_gouv(donnees):
     """
         Enregistrement d'un JSON en BDD au format récupéré du lien permanent.
-        :param donnes: les données en format JSON pour insérer dans la BDD
+        :param donnees: les données en format JSON pour insérer dans la BDD
     """
-    for dic_data in donnes:
-        # utilisation d'un `defaultdict` pour éviter les `KeyError` si le champs est manquant dans le JSON
+    for dic_data in donnees:
+        # Utilisation d'un `defaultdict` pour éviter les `KeyError` si le champs est manquant dans le JSON
         update_db(dic_data["fields"])
 
 
@@ -92,7 +91,7 @@ def differ_maj_bdd():
 
     try:
         print("Mise à jour en cours...")
-        read_json_api_ameli(json_covid)  # mise à jour de la BDD avec le JSON
+        read_json_api_ameli(json_covid)  # Mise à jour de la BDD avec le JSON
     except Exception as e:
         print(e)
         pass
@@ -134,7 +133,7 @@ def get_champs(dic, champs):
 
 def update_db(dic):
     """
-    Update de la BDD avec le dictionnaire.
+    Mise à jour de la BDD avec le dictionnaire.
     :param dic: les données à insérer
     """
     date_reference = get_champs_date(dic, "date_reference")
@@ -169,11 +168,10 @@ def update_db(dic):
     db.session.commit()
 
 
+# ============ SYNCHRONISATION ============
+# MIS DANS LE SCHEDULER DANS APP.PY (à compléter pour la condition)
 # Si la BDD est vide
 # init_full_bdd()
 
 # Pour mettre à jour la base existante
 differ_maj_bdd()
-
-# ============ SYNCHRONISATION ============
-# TODO : à finir
