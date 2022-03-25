@@ -6,10 +6,11 @@ from datetime import datetime
 import requests
 from app import *
 from sqlalchemy import desc
-from resources.user import *
-from resources.covid import *
 from models.db import *
 
+from models.covid import DataCovidModel, DataCovidSchema
+from models.db import db
+"""D'ailleurs ça s'appelle DataCovidModel maintenant"""
 
 # URL permanent pour import total dans une BDD vide
 URL_PERMANENT = "https://www.data.gouv.fr/fr/datasets/r/759b5ec2-a585-477a-9c62-7f74a7bdec3d"
@@ -86,7 +87,7 @@ def differ_maj_bdd():
     Interrogation de l'API pour récupérer seulement les nouvelles données (flux différentiel) pour mettre à jour la BDD.
     """
     # Récupération de la dernière date dans la BDD à partir de laquelle on veut mettre à jour
-    last_data = DATA_COVID.query.order_by(desc(DATA_COVID.date)).first()
+    last_data = DataCovidModel.query.order_by(desc(DataCovidModel.date)).first()
     json_covid = differ_api_ameli(last_data.date)  # appel de l'API pour récupérer les nouvelles données
 
     try:
@@ -153,7 +154,7 @@ def update_db(dic):
     taux_cumu_termine = get_champs(dic, "taux_cumu_termine")
     date = get_champs_date(dic, "date")
 
-    data = DATA_COVID(date_reference=date_reference,
+    data = DataCovidModel(date_reference=date_reference,
                       semaine_injection=semaine_injection,
                       commune_residence=commune_residence,
                       libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
