@@ -2,7 +2,7 @@
 
 Ce projet a été réalisé dans le cadre du cours Technique Web dirigé par M. Elvis Mboning, du Master Traitement Automatique des Langues de l'INALCO.
 
-Groupe 1 : Alexandra PONOMAREVA, Lufei LIU, Elise LINCKER
+Groupe 1 : Elise LINCKER, Lufei LIU, Alexandra PONOMAREVA
 
 ## Description du projet
 
@@ -42,3 +42,8 @@ Pour lancer l'application :
 python3 app.py
 
 URL d'accès :
+http://dataviewer.api.localhost:5000/
+
+## Client web
+
+Est utilisé le client web Postman. URL vers la documentation : https://documenter.getpostman.com/view/16846441/UVyn1JaA
