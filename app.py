@@ -14,7 +14,7 @@
 # resources.covid : tout marche ✅ 
 # + semaine_injection (on laisse en string ou on change ce champ ?)
 # nom du serveur ✅
-# lib.utils / app : relier synchro et apscheduler (@Lufei début de solu)
+# relier synchro et scheduler ✅
 # Heroku (@sasha)
 # que faire de ce code ?
 """
@@ -35,11 +35,11 @@ def load_user(user_id):
 __version__ = "0.6"
 
 from flask import Flask
-from flask_apscheduler import APScheduler
-#import lib.synchronisation as synchro
 from resources.user import users
 from resources.covid import covid
-from models.db import initialize_db, initialize_marshmallow,login_manager
+from models.db import initialize_db, initialize_marshmallow
+from lib.scheduler import start_scheduler
+
 
 app = Flask(__name__)
 
@@ -55,37 +55,11 @@ app.config.update({'SCHEDULER_API_ENABLED': True})
 
 initialize_db(app)
 initialize_marshmallow(app)
-
-"""
-# On peut peut-être déplacer cette partie dans le fichier utils.py ? 
-# PAS REUSSI A CAUSE DE LA LIGNE : scheduler.init_app(app)
-
-+
-
-RENVOIE UNE ERREUR lors de l'importation du script synchronisation
-🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-"""
-# Créer un objet Scheduler pour une tâche programmée
-scheduler=APScheduler()
-scheduler.init_app(app)
-
-# Ajouter une tâche programmée à l'ordonnanceur (mise à jour des données depuis datagouv + mise à jour de base de données)
-#@scheduler.task('interval', id='do_job', days=1)
-def job():
-    print("Synchronisation...")
-    # Si la BDD est vide 🐽🐽🐽🐽🐽🐽
-    # synchro.init_full_bdd()
-    # Pour mettre à jour la base existante
-    #synchro.differ_maj_bdd()
-    print("...synchronisation terminée")
-
-# Démarrer le travail du planificateur de tâches programmé 
-scheduler.start()
-
+start_scheduler(app)
 
 
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# juste copié Noélie pour la route de base
+# juste copié Noélie pour la route de base - peut être ajouter un lien vers la doc ou quoi ?
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 # Page d'accueil
 @app.route('/')
@@ -94,5 +68,5 @@ def home():
 
 
 if __name__ == "__main__":
-    # app.run(host='127.0.0.1', port=5001)
+    #app.run(host='127.0.0.1', port=5001)
     app.run()

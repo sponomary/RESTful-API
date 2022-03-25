@@ -4,11 +4,10 @@
 import json
 from datetime import datetime
 import requests
-from app import *
 from sqlalchemy import desc
-from models.covid import DataCovidModel, DataCovidSchema
-from models.db import db, ma #on utilise ma ici ? 🐽
-from resources.user import * #? 🐽
+from models.covid import DataCovidModel
+from models.db import db
+from resources.user import *  #? 🐽
 from resources.covid import * #? 🐽
 
 
@@ -86,7 +85,7 @@ def differ_maj_bdd():
     Interrogation de l'API pour récupérer seulement les nouvelles données (flux différentiel) pour mettre à jour la BDD.
     """
     # Récupération de la dernière date dans la BDD à partir de laquelle on veut mettre à jour
-    last_data = DataCovidModel.query.order_by(desc(DataCovidModel.date)).first()
+    last_data = db.session.query(DataCovidModel).order_by(desc(DataCovidModel.date)).first()
     json_covid = differ_api_ameli(last_data.date)  # appel de l'API pour récupérer les nouvelles données
 
     try:
@@ -166,12 +165,3 @@ def update_db(dic):
 
     db.session.add(data)
     db.session.commit()
-
-
-# ============ SYNCHRONISATION ============
-# MIS DANS LE SCHEDULER DANS APP.PY (à compléter pour la condition)
-# Si la BDD est vide
-# init_full_bdd()
-
-# Pour mettre à jour la base existante
-differ_maj_bdd()
