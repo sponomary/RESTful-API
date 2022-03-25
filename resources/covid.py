@@ -1,11 +1,9 @@
-from email.policy import default
 from flask import Blueprint
 from models.covid import DataCovidModel, DataCovidSchema
 from models.db import db
 from flask import request, jsonify
 from lib.utils import token_required
 from datetime import datetime
-
 
 covid = Blueprint('covid', __name__)
 
@@ -76,14 +74,14 @@ def create_covid():
     taux_cumu_termine = request.json.get('taux_cumu_termine', '')
 
     data = DataCovidModel(date_reference=date_reference, semaine_injection=semaine_injection,
-                      commune_residence=commune_residence,
-                      libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
-                      libelle_classe_age=libelle_classe_age, effectif_1_inj=effectif_1_inj,
-                      effectif_termine=effectif_termine,
-                      effectif_cumu_1_inj=effectif_cumu_1_inj, effectif_cumu_termine=effectif_cumu_termine,
-                      taux_1_inj=taux_1_inj, taux_termine=taux_termine, taux_cumu_1_inj=taux_cumu_1_inj,
-                      taux_cumu_termine=taux_cumu_termine,
-                      date=datetime.utcnow())
+                          commune_residence=commune_residence,
+                          libelle_commune=libelle_commune, population_carto=population_carto, classe_age=classe_age,
+                          libelle_classe_age=libelle_classe_age, effectif_1_inj=effectif_1_inj,
+                          effectif_termine=effectif_termine,
+                          effectif_cumu_1_inj=effectif_cumu_1_inj, effectif_cumu_termine=effectif_cumu_termine,
+                          taux_1_inj=taux_1_inj, taux_termine=taux_termine, taux_cumu_1_inj=taux_cumu_1_inj,
+                          taux_cumu_termine=taux_cumu_termine,
+                          date=datetime.utcnow())
 
     data.save_to_db()
     data_covid_schema = DataCovidSchema()
