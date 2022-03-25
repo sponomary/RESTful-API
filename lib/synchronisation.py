@@ -6,8 +6,6 @@ import requests
 from sqlalchemy import desc
 from models.covid import DataCovidModel
 from models.db import db
-from resources.user import *  #? 🐽
-from resources.covid import * #? 🐽
 
 
 # URL permanent pour import total dans une BDD vide
