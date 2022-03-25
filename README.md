@@ -33,9 +33,6 @@ Nos missions en tant qu'employés de l'entreprise DataViewer sont les suivantes 
 Pour installer les dépendances :
 pip install -r requirements.txt
 
-Pour mettre à jour les dépendances :
-pip freeze > requirements.txt
-
 ## Utilisation
 
 Pour lancer l'application :
