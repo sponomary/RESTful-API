@@ -14,7 +14,7 @@
 # resources.covid : tout marche ✅ 
 # + semaine_injection (on laisse en string ou on change ce champ ?)
 # nom du serveur ✅
-# relier synchro et scheduler ✅
+# relier synchro et scheduler ✅ (initialisation ok si la table existe mais est vide / vérifier que ça synchro bien ?)
 # Heroku (@sasha)
 # que faire de ce code ?
 """

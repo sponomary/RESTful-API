@@ -1,5 +1,7 @@
 from flask_apscheduler import APScheduler
-import synchronisation as synchro
+from .synchronisation import init_full_bdd, differ_maj_bdd
+from models.covid import DataCovidModel
+from models.db import db
 
 
 scheduler = APScheduler()  # créer un objet Scheduler pour une tâche programmée
@@ -10,10 +12,12 @@ def start_scheduler(app):
     @scheduler.task('interval', id='do_job', days=1)
     def job():
         print("Synchronisation...")
-        # Si la BDD est vide 🐽🐽🐽🐽🐽🐽
-        #synchro.init_full_bdd()
-        # Pour mettre à jour la base existante
         with app.app_context():
-            synchro.differ_maj_bdd()
+            # Si la table DATA_COVID de la BDD est vide, initialisation des données
+            if db.session.query(DataCovidModel).first() is None:
+                init_full_bdd()
+            # Sinon, mise à jour de la base existante
+            else:
+                differ_maj_bdd()
         print("...synchronisation terminée")
     scheduler.start()
