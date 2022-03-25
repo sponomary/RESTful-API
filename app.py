@@ -9,10 +9,12 @@
 """
 
 # TODO :
-# resources.user : logout --> toujours nécessaire ?
+# models : ok ✅
+# resources.user : ok sauf logout --> toujours nécessaire ?
+# resources.covid : tout marche ✅ 
+# + semaine_injection (on laisse en string ou on change ce champ ?)
 # nom du serveur ✅
-# relier synchro et apscheduler
-# resources.covid : finir PATCH et POST ✅ / dates ✅ + semaine_injection (on laisse en string ou on change ce champ ?)
+# lib.utils / app : relier synchro et apscheduler (@Lufei début de solu)
 # Heroku (@sasha)
 # que faire de ce code ?
 """
@@ -26,14 +28,14 @@ def load_user(user_id):
 # doc postman (✅ si ça vous va)
 # readme
 # equipe.txt
-# page d'accueil, on met un truc comme les filles ?
+# page d'accueil, on met un truc comme les filles ?  peut être ajouter un lien vers la doc ou quoi ?
 # vérifier les requirements
 # quelque chose d'autre ?
 
 __version__ = "0.6"
 
 from flask import Flask
-from flask_apscheduler import APScheduler #ajouter dans les requirements 🐽🐽
+from flask_apscheduler import APScheduler
 #import lib.synchronisation as synchro
 from resources.user import users
 from resources.covid import covid
@@ -83,7 +85,7 @@ scheduler.start()
 
 
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-# juste copié Noélie pour la route de base - peut être ajouter un lien vers la doc ou quoi ?
+# juste copié Noélie pour la route de base
 # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
 # Page d'accueil
 @app.route('/')

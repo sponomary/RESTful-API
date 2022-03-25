@@ -7,11 +7,10 @@ ma = Marshmallow()
 lm = LoginManager()
 
 
-# fonctions appelées par app.py pour initialser la base de données
+# fonctions appelées par app.py pour initialiser la base de données
 
 def initialize_db(app):
     db.init_app(app)
-
 
 def initialize_marshmallow(app):
     ma.init_app(app)
