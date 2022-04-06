@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# coding: utf-8
+
 from .db import db, ma
 from datetime import datetime
 

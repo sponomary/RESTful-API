@@ -1,8 +1,11 @@
+#!/usr/bin/python3
+# coding: utf-8
+
 from flask import Blueprint
-from models.covid import DataCovidModel, DataCovidSchema
-from models.db import db
+from ..models.covid import DataCovidModel, DataCovidSchema
+from ..models.db import db
 from flask import request, jsonify
-from lib.utils import token_required
+from ..lib.utils import token_required
 from datetime import datetime
 
 covid = Blueprint('covid', __name__)

@@ -11,8 +11,8 @@
 import json
 import requests
 from sqlalchemy import desc
-from models.covid import DataCovidModel
-from models.db import db
+from ..models.covid import DataCovidModel
+from ..models.db import db
 
 
 # URL permanent pour import total dans une BDD vide

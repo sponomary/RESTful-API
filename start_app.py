@@ -49,9 +49,11 @@ application = DispatcherMiddleware(frontend, {
 
 dataviewer_app = Flask(__name__)
 dataviewer_app.wsgi_app = application
+dataviewer_app.config['DEBUG'] = True
+dataviewer_app.config['SERVER_NAME'] = 'dataviewer.api.localhost:5000'
 
 # ------------------------------------------------------------------
 
 if __name__ == '__main__':
-    dataviewer_app.run(host='127.0.0.1', port='5000', use_evalex=True,
-                  use_reloader=True, use_debugger=True)
+    dataviewer_app.run(use_evalex=True, use_reloader=True, use_debugger=True)
+    #dataviewer_app.run(host='127.0.0.1', port='5000', use_evalex=True, use_reloader=True, use_debugger=True)
