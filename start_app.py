@@ -47,11 +47,11 @@ application = DispatcherMiddleware(frontend, {
     '/api': backend
 })
 
-dataviwer_app = Flask(__name__)
-dataviwer_app.wsgi_app = application
+dataviewer_app = Flask(__name__)
+dataviewer_app.wsgi_app = application
 
 # ------------------------------------------------------------------
 
 if __name__ == '__main__':
-    dataviwer_app.run(host='127.0.0.1', port='5000', use_evalex=True,
+    dataviewer_app.run(host='127.0.0.1', port='5000', use_evalex=True,
                   use_reloader=True, use_debugger=True)
