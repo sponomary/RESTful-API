@@ -15,38 +15,34 @@ users = Blueprint('users', __name__)
 @users.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        print("OK 0")
-        data = request.form.to_dict()
-        print("OK 1")
-        api_resp = create_client(data)
-        print("OK 2")
-        code_resp = api_resp[0]
-        print("OK 3")
-        print("CODE:",code_resp)
-        data_response = api_resp[1]
-        print("RESP:",data_response)
+        data_json = request.form.to_dict()
+        # on obtient : data_json = {'name':name, 'email':email, 'password':password}
+        api_resp = create_client(data_json)
+        code_resp = api_resp['status']
+        data_response = api_resp['message']
 
         if code_resp != 201 :
+            # déjà un compte ---> login
             flash("error: %s"%code_resp)
-            render_template('user/README.html', api_error=True,
-                            api_message=data_response['message'])
+            return redirect(url_for("users.login"))
         else:
-            return ("mettre la page login")
-            #return redirect(url_for('authcepty.login'), api_error=False)
-
-    return render_template('register.html')
+            flash("Successfully registered: %s"%code_resp)
+            return redirect(url_for("users.login"))
+            # CHANGER ICI
+            # renvoyer vers une page qui dit ok bien inscrit + faire en sorte que l'utilisateur soit connecté
+            # Erreur "no secret key was set" à résoudre
+    return render_template('register.html') #GET --> page d'inscription
 
 
 @users.route('/login', methods=('GET', 'POST'))
 def login():
     data_response = {}
     if request.method == 'POST':
-        username = request.form['email'] 
-        password = request.form['password']
-        api_resp = login_api(username, password)
-        print(api_resp)
-        code_resp = api_resp[0]
-        data_response = api_resp[1]
+        data_json = request.form.to_dict()
+        # on obtient : data_json = {'email':email, 'password':password}
+        api_resp = login_api(data_json)
+        code_resp = api_resp['status']
+        data_response = api_resp['message']
 
         if code_resp in [200, 201]:
             """
@@ -58,6 +54,9 @@ def login():
             return redirect(url_for('contributions.index'))
             """
             print("connection réussie")
+            return redirect(url_for('home'))
+            # CHANGER ICI
+            # faire en sorte que l'utilisateur soit connecté
         else:
             print("error")
             """
@@ -67,7 +66,6 @@ def login():
             """
 
     elif request.method == 'GET':
-        print("une mini étape réussi ! ")
         return render_template('login.html', api_error=False)
     else: flash(error)
 
