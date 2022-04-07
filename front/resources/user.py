@@ -15,11 +15,16 @@ users = Blueprint('users', __name__)
 @users.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
-        data = dict(request.form)
+        print("OK 0")
+        data = request.form.to_dict()
+        print("OK 1")
         api_resp = create_client(data)
-        print(api_resp)
+        print("OK 2")
         code_resp = api_resp[0]
+        print("OK 3")
+        print("CODE:",code_resp)
         data_response = api_resp[1]
+        print("RESP:",data_response)
 
         if code_resp != 201 :
             flash("error: %s"%code_resp)
@@ -29,7 +34,7 @@ def register():
             return ("mettre la page login")
             #return redirect(url_for('authcepty.login'), api_error=False)
 
-    return render_template('user/register.html')
+    return render_template('register.html')
 
 
 @users.route('/login', methods=('GET', 'POST'))
@@ -63,7 +68,7 @@ def login():
 
     elif request.method == 'GET':
         print("une mini étape réussi ! ")
-        return render_template('user/README.html', api_error=False)
+        return render_template('login.html', api_error=False)
     else: flash(error)
 
 

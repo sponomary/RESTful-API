@@ -39,5 +39,14 @@ def login_api(email, password):
     return resp_api.status_code, resp_json
 
 def create_client(data):
-    resp_api = requests.post(URL_USER_POST, json=data) 
+    print("CREATE CLIENT INPUT:",data)
+    resp_api = requests.post(URL_USER_POST, data)
+    print("CREATE CLIENT OK")
+    return resp_api
+
+"""
+SEIGNEUR
+def create_client(data):
+    resp_api = requests.post(URL_CLIENT_POST, json=data)
     return resp_api.status_code, resp_api.json()
+"""
