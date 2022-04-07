@@ -18,7 +18,7 @@ from os import environ
 
 HOST_API = "dataviewer.api.localhost:5000/api"
 URL_LOGIN = HOST_API+"/login"
-URL_CLIENT_POST = HOST_API+"/register"
+URL_USER_POST = HOST_API+"/register"
 URL_ALLDATA_GET = HOST_API+"/covid/" # URL qui retourne toutes les données covid 
 URL_ONEDATA_GET_PATCH_DELETE = HOST_API+"/covid/{data_id}/" # URL qui retourne/met à jour/supprime une donnée covid
 URL_ONEDATA_POST = HOST_API+"/covid/" # URL qui crée une nouvelle donnée covid 
@@ -38,3 +38,6 @@ def login_api(email, password):
     resp_json = resp_api.json()
     return resp_api.status_code, resp_json
 
+def create_client(data):
+    resp_api = requests.post(URL_USER_POST, json=data) 
+    return resp_api.status_code, resp_api.json()
