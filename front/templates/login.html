@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 
+<h1>Connexion</h1>
 <div class="box">
-    <h1>Connexion</h1>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
 				<div class="form-group">
 					<div class="alert alert-danger" role="alert" id="alert-danger-login">
 						<strong>{{ message }}</strong>.
 					</div>
 				</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
 
-    <form action="{{ url_for('users.login') }}" method="post">
-        <input type="text" name="email" placeholder="Email" required="required"/>
-        <input type="password" name="password" placeholder="Mot de passe" required="required"/>
-        <button type="submit" class="btn btn-primary btn-block btn-large">Se connecter</button>
-    </form>
+	<form action="{{ url_for('users.login') }}" method="post">
+		<input type="text" name="email" placeholder="Email" required="required"/>
+		<input type="password" name="password" placeholder="Mot de passe" required="required"/>
+		<button type="submit" class="btn btn-primary btn-block btn-large">Se connecter</button>
+	</form>
 </div>
 
 {% endblock %}

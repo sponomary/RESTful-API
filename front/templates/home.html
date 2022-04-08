@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
+<h1>DataViewer</h1>
 <div class="box">
-	<h1>DataViewer</h1>
 	{% if session['token']: %}
 		{% with messages = get_flashed_messages() %}
 			{% if messages %}
@@ -16,11 +16,11 @@
 			{% endif %}
 		{% endwith %}
 		<p class="text-light">Bienvenue sur DataViewer, votre plateforme de visualisation de données sur la vaccination de la COVID-19 par commune.</p>
+		<p class="text-info">Vous êtes bien connecté, vous pouvez modifier les données.</p>
 	{% else: %}
 		<p class="text-light">Bienvenue sur DataViewer, votre plateforme de visualisation de données sur la vaccination de la COVID-19 par commune.</p>
-		<p class="text-info">Pour continuer, connectez-vous !</p>
+		<p class="text-info">Pour modifier les données, connectez-vous !</p>
 	{% endif %}
-
 </div>
 
 {% endblock %}
