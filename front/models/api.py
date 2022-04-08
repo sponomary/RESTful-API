@@ -39,3 +39,12 @@ def create_client(data):
     resp_api = requests.post(URL_USER_POST, data)
     return resp_api.json()
 
+def get_all_covid():
+    resp_api = requests.get(URL_ALLDATA_GET)
+    return resp_api.json()
+
+def get_covid_by_id(id):
+    print("LANCE LA REQUETE DANS BACK avec id "+id)
+    resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
+    print("RESP:",resp_api.json())
+    return resp_api.json()
