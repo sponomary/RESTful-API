@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="box">
+	<h1 class="title">Données COVID :</h1>
+	{% if session['token']: %}
+		<p>OK ON EST CONNECTE - CETTE PAGE EST JUSTE RECYCLEE POUR TESTER</p><!-- pour tester -->
+		<!-- GENERALISER ICI -->
+		<p>Effectuer une requête (premier test sur commune uniquement)</p>
+		<form action="{{ url_for('covid.data') }}" method="post">
+			<input type="text" name="commune" placeholder="Entrez une commune (ANTONY ou NEUILLY SUR SEINE)" required="required"/>
+			<button type="submit" class="btn btn-primary btn-block btn-large">Rechercher</button>
+		</form>
+		
+		<!-- Affichage des données -->
+		<table class="table table-light table-hover table-striped">
+			<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Date</th>
+				<th scope="col">Commune</th>
+			</tr>
+			</thead>
+			<tbody>
+				{% for row in output_data %}
+					<tr>
+						<td>{{row.id}}</td>
+						<td>{{row.date_reference}}</td>
+						<td>{{row.commune_residence}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else: %}
+		<p>Votre session est arrivée à expiration. Merci de vous reconnecter.</p> <!-- Tester comment marche l'expiration -->
+	{% endif %}
+
+</div>
+
+{% endblock %}

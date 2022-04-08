@@ -15,6 +15,9 @@ from flask_bootstrap import Bootstrap
 from flask_cors import CORS
 from .resources.user import users
 from .resources.covid import covid
+from flask import Flask, session
+from flask_session import Session
+import os
 
 __all__ = ['dataviewerFront']
 
@@ -26,10 +29,16 @@ dataviewerFront.register_blueprint(covid, url_prefix='/covid')
 
 dataviewerFront.config['DEBUG'] = True
 
-#dataviewerFront.add_url_rule('/', endpoint='contributions.index')
+# Pour la connexion et les sessions des utilisateurs
+dataviewerFront.config['SESSION_TYPE'] = 'filesystem'
+dataviewerFront.config["PERMANENT_SESSION_LIFETIME"] = 1800
+dataviewerFront.config["SECRET_KEY"] = "dataviewerSecretKey2022"
+sess = Session(dataviewerFront)
+sess.init_app(dataviewerFront)
 
+dataviewerFront.add_url_rule('/', endpoint='home')
 
 # Page d'accueil
 @dataviewerFront.route('/')
 def home():
-    return render_template("base.html")
+    return render_template("home.html")

@@ -1,14 +1,6 @@
-from flask import Blueprint
-from flask_login import logout_user
-from flask import request, jsonify, make_response
-from werkzeug.security import generate_password_hash, check_password_hash
-import jwt
-from datetime import datetime, timedelta
-import functools
-from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for)
+from flask import Blueprint, request, flash, redirect, render_template, session, url_for
 
 from front.models.api import login_api,create_client
-
 
 users = Blueprint('users', __name__)
 
@@ -18,56 +10,53 @@ def register():
         data_json = request.form.to_dict()
         # on obtient : data_json = {'name':name, 'email':email, 'password':password}
         api_resp = create_client(data_json)
-        code_resp = api_resp['status']
-        data_response = api_resp['message']
+        # on obtient : api_resp = {'message':message, 'status':status, 'user':email}
+        # + si connexion réussie 'token':token
+        status_code = api_resp['status']
+        message = api_resp['message']
 
-        if code_resp != 201 :
-            # déjà un compte ---> login
-            flash("error: %s"%code_resp)
+        if status_code != 201 :
+            print("error")
+            flash("Error : %s"%message)
             return redirect(url_for("users.login"))
         else:
-            flash("Successfully registered: %s"%code_resp)
-            return redirect(url_for("users.login"))
+            flash("Inscription et connexion réussies : %s"%status_code)
+            return redirect(url_for("home"))
             # CHANGER ICI
             # renvoyer vers une page qui dit ok bien inscrit + faire en sorte que l'utilisateur soit connecté
             # Erreur "no secret key was set" à résoudre
     return render_template('register.html') #GET --> page d'inscription
 
-
 @users.route('/login', methods=('GET', 'POST'))
 def login():
-    data_response = {}
     if request.method == 'POST':
         data_json = request.form.to_dict()
         # on obtient : data_json = {'email':email, 'password':password}
         api_resp = login_api(data_json)
-        code_resp = api_resp['status']
-        data_response = api_resp['message']
-
-        if code_resp in [200, 201]:
-            """
+        # on obtient : api_resp = {'message':message, 'status':status, 'user':email}
+        # + si connexion réussie 'token':token
+        status_code = api_resp['status']
+        message = api_resp['message']
+        user = api_resp['user']
+        
+        if status_code in [200, 201]:
+            token = api_resp['token']
             session.clear()
-            session['user_id'] = data_response['data']['id']
-            session['token'] = data_response['token']
-            session['client'] = data_response['data']
-            g.client = data_response['data']
-            return redirect(url_for('contributions.index'))
-            """
-            print("connection réussie")
-            return redirect(url_for('home'))
-            # CHANGER ICI
-            # faire en sorte que l'utilisateur soit connecté
+            session['user'] = user
+            session['token'] = token
+            flash("Connexion réussie : %s"%status_code)
+            return redirect(url_for('home')) # CHANGER ICI, faire en sorte que l'utilisateur soit connecté
         else:
-            print("error")
-            """
-            message_login = data_response['message']
-            return render_template('authcepty/login.html', api_error=True, 
-                                    api_message=message_login)
-            """
+            flash("Error : %s"%message)
+            return render_template('login.html')
 
     elif request.method == 'GET':
-        return render_template('login.html', api_error=False)
-    else: flash(error)
+        return render_template('login.html')
+        # logged_in=current_user.is_authenticated)
+    else: flash(error) # pas sûre de ce else (????????????????????????????????)
 
-
-
+@users.route('/logout')
+def logout():
+    session.clear()
+    print("déconnexion réussie")
+    return redirect(url_for('home'))
