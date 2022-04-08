@@ -1,6 +1,8 @@
+from cmath import log
 from inspect import BoundArguments
 from flask import Blueprint, request, flash, redirect, render_template, session, url_for
 from front.models.api import get_all_covid, get_covid_by_id, get_multiple_info, add_covid
+from front.resources.user import login_required
 
 covid = Blueprint('covid', __name__)
 
@@ -49,19 +51,26 @@ def data():
 
 # Créer une nouvelle donnée
 @covid.route('/data/new',methods=('GET', 'POST'))
-def add_data():
+@login_required
+def add_data(token):
     if request.method == 'POST':
         # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
         # PLAGIER SEIGNEUR ET AJOUTER TOKEN DANS HEADER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         # SINON RENVOIE 'Token is missing !!'
         data_json = request.form.to_dict()
-        api_resp = add_covid(data_json)
+        print("FORM_DATA:",data_json)
+        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+        # erreur très bizarre à cette étape, j'ai l'impression que ça vient de la colonne date_reference
+        api_resp = add_covid(token,data_json) 
         print("API_RESP:" + str(api_resp))
 
         # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
         # FAIRE UN IF SUR LE STATUS CODE :
-        #code_resp = api_resp[0] # status code
-        #data_resp = api_resp[1] # une donnée covid au format json
+        code_resp = api_resp[0] # status code
+        data_resp = api_resp[1] # une donnée covid à ajoutée au format json
+        if code_resp not in [200, 201]:
+            flash('Veuillez vous connecter.')
+            return redirect(url_for('users.login'))
         #flash("Donnée ajoutée")
         #flash("Impossible de créer une donnée à partir de votre saisie")
         #(on pourrait aussi mettre des conditions sur les champs du formulaire)

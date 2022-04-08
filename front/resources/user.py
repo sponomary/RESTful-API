@@ -1,6 +1,6 @@
 from flask import Blueprint, request, flash, redirect, render_template, session, url_for
-
 from front.models.api import login_api,create_client
+import functools
 
 users = Blueprint('users', __name__)
 
@@ -29,7 +29,7 @@ def register():
             session.clear()
             session['user'] = user
             session['token'] = token
-            flash("Inscription et connexion réussies : %s"%status_code)
+            flash("Inscription et connexion réussies : %s"%status_code) # 🐽🐽🐽🐽🐽 peut etre enlever ce flash ??? 🐽🐽🐽🐽🐽
             return redirect(url_for("home"))
     # GET: renvoie la page d'inscription
     return render_template('register.html')
@@ -61,12 +61,19 @@ def login():
     elif request.method == 'GET':
         return render_template('login.html')
 
-    else: flash(error) 
-    # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽 
-    # pas sûre de ce else (????????????????????????????????)
 
 # Déconnexion
 @users.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('home'))
+
+# token
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if 'user' not in session:
+            session.clear()
+            return redirect(url_for('users.login'))
+        return view(session['token'], **kwargs)
+    return wrapped_view
