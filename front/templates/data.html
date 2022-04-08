@@ -6,71 +6,72 @@
 <form action="{{ url_for('covid.data') }}" method="post">
 	<div class="form-group row">
 		<div class="col">
-			<input id="id" type="text" class="form-control" placeholder="Identifiant"/>
+			<input id="id" name="id" type="text" class="form-control" placeholder="Identifiant"/>
 		</div>
 		<div class="col">
-			<input id="semaine_injection" type="text" pattern="[0-9]{4}-[0-9]{2}" class="form-control" placeholder="Semaine d'injection"/>
-		</div>
-	</div>
-	<div class="form-group row">
-		<div class="col">
-			<input id="classe_age" type="text" class="form-control" placeholder="Classe age" required/>
-		</div>
-		<div class="col">
-			<input id="libelle_classe_age" type="text" class="form-control" placeholder="Libellé classe âge" required/>
+			<input id="semaine_injection" name="semaine_injection" type="text" pattern="[0-9]{4}-[0-9]{2}" class="form-control" placeholder="Semaine d'injection"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col">
-			<input id="commune" type="text" class="form-control" placeholder="Commune" required/>
+			<input id="classe_age" name="classe_age" type="text" class="form-control" placeholder="Classe age"/>
 		</div>
 		<div class="col">
-			<input id="libelle_commune" type="text" class="form-control" placeholder="Libellé commune" required/>
-		</div>
-		<div class="col">
-			<input id="population_carto" type="text" class="form-control" placeholder="Population" required/>
+			<input id="libelle_classe_age" name="libelle_classe_age" type="text" class="form-control" placeholder="Libellé classe âge"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col">
-			<input id="effectif_1_inj" type="text" class="form-control" placeholder="Effectif 1 injection"/>
+			<input id="commune" name="commune" type="text" class="form-control" placeholder="Commune"/>
 		</div>
 		<div class="col">
-			<input id="effectif_termine" type="text" class="form-control" placeholder="Effectif terminé"/>
+			<input id="libelle_commune" name="libelle_commune" type="text" class="form-control" placeholder="Libellé commune"/>
 		</div>
 		<div class="col">
-			<input id="effectif_cumu_1_inj" type="text" class="form-control" placeholder="Effectif cumu 1 injection" required/>
-		</div>
-		<div class="col">
-			<input id="effectif_cumu_termine" type="text" class="form-control" placeholder="Effectif cumu terminé" required/>
+			<input id="population_carto" name="population_carto" type="text" class="form-control" placeholder="Population"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col">
-			<input id="taux_1_inj" type="text" class="form-control" placeholder="Taux 1 injection"/>
+			<input id="effectif_1_inj" name="effectif_1_inj" type="text" class="form-control" placeholder="Effectif 1 injection"/>
 		</div>
 		<div class="col">
-			<input id="taux_termine" type="text" class="form-control" placeholder="Taux terminé"/>
+			<input id="effectif_termine" name="effectif_termine" type="text" class="form-control" placeholder="Effectif terminé"/>
 		</div>
 		<div class="col">
-			<input id="taux_cumu_1_inj" type="text" class="form-control" placeholder="Taux cumu 1 injection" required/>
+			<input id="effectif_cumu_1_inj" name="effectif_cumu_1_inj" type="text" class="form-control" placeholder="Effectif cumu 1 injection"/>
 		</div>
 		<div class="col">
-			<input id="taux_cumu_termine" type="text" class="form-control" placeholder="Taux cumu terminé" required/>
+			<input id="effectif_cumu_termine" name="effectif_cumu_termine" type="text" class="form-control" placeholder="Effectif cumu terminé"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col">
-			<input id="date" type="text" class="form-control" placeholder="Date" required/>
+			<input id="taux_1_inj" name="taux_1_inj" type="text" class="form-control" placeholder="Taux 1 injection"/>
 		</div>
 		<div class="col">
-			<input id="date_reference" type="text" class="form-control" placeholder="Date de référence" required/>
+			<input id="taux_termine" name="taux_termine" type="text" class="form-control" placeholder="Taux terminé"/>
+		</div>
+		<div class="col">
+			<input id="taux_cumu_1_inj" name="taux_cumu_1_inj" type="text" class="form-control" placeholder="Taux cumu 1 injection"/>
+		</div>
+		<div class="col">
+			<input id="taux_cumu_termine" name="taux_cumu_termine" type="text" class="form-control" placeholder="Taux cumu terminé"/>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col">
+			<input id="date" name="date" type="text" class="form-control" placeholder="Date"/>
+		</div>
+		<div class="col">
+			<input id="date_reference" name="date_reference" type="text" class="form-control" placeholder="Date de référence"/>
 		</div>
 	</div>
 	<button type="submit" class="btn btn-primary btn-block btn-large">Rechercher</button>
-	<p>Ici un autre formulaire pour récupérer les valeurs uniques ?</p>
-	<button type="submit" class="btn btn-primary btn-block btn-large">Récupérer les valeurs uniques</button>
 </form>
+
+<p>Ici un autre formulaire pour récupérer les valeurs uniques ?</p>
+<button type="submit" class="btn btn-primary btn-block btn-large">Récupérer les valeurs uniques</button>
 
 <!-- Affichage des données -->
 <table class="table table-light table-hover table-striped">

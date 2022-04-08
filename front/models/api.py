@@ -65,9 +65,9 @@ def delete_covid(id):
 
 # URL_ONEDATA_POST ---> créer une nouvelle donnée covid
 
-# URL_MULTIPLE_INFO_GET ---> faire + tard car implique un nouveau formulaire HTML
+# URL_MULTIPLE_INFO_GET ---> exploiter le formulaire HTML
 def get_multiple_info(search_info):
-    print("Info to search "+search_info)
+    print("Info to search "+str(search_info))
     resp_api = requests.get(URL_MULTIPLE_INFO_GET.format(info = search_info))
     print("RESP:",resp_api.json())
     print("CODE",resp_api.status_code)

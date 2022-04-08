@@ -1,15 +1,14 @@
 import email
 from flask import Blueprint
 from ..models.user import User
-from flask import request, jsonify, make_response
+from flask import request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from datetime import datetime, timedelta
 
 users = Blueprint('users', __name__)
 
-
-# Création d'un compte
+# Inscription
 @users.route('/register', methods=['POST'])
 def register():
     # Création d'un dictionnaire pour stocker les form-data
@@ -45,7 +44,6 @@ def register():
             {'message':'User already exists. Please Log in.', 
             'status':202, 
             'email':email})
-
 
 # Connexion
 @users.route('/login', methods=['POST'])
