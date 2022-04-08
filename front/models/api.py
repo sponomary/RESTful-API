@@ -46,6 +46,7 @@ def get_all_covid():
     return resp_api.status_code, resp_api.json()
 
 # (?) peut-être on peut zapper ça car se fait direct dans la recherche si on remplit que le champ id (?) à voir
+# Je suis d'accord pour enlever ça, ça rend plus prore ---lulu
 def get_covid_by_id(id):
     print("GET COVID ID "+id)
     resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
@@ -66,11 +67,15 @@ def delete_covid(id):
     return resp_api.json()
 
 # URL_ONEDATA_POST ---> créer une nouvelle donnée covid
-def add_covid(data):
+def add_covid(token,data):
     print(data)
     print(URL_ONEDATA_POST)
-    resp_api = requests.post(URL_ONEDATA_POST,data)
-    return resp_api.json()
+    headers = {"x-access-token": token}
+    print("TOKEN:",token)
+    resp_api = requests.post(URL_ONEDATA_POST,data,headers=headers)
+    print("RESP:",resp_api.json())
+    print("CODE:",resp_api.status_code)
+    return resp_api.status_code,resp_api.json()
 
 # URL_MULTIPLE_INFO_GET ---> exploiter le formulaire HTML
 def get_multiple_info(search_info):
