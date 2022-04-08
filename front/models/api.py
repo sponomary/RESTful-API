@@ -44,7 +44,25 @@ def get_all_covid():
     return resp_api.json()
 
 def get_covid_by_id(id):
-    print("LANCE LA REQUETE DANS BACK avec id "+id)
+    print("GET COVID ID "+id)
     resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
     print("RESP:",resp_api.json())
     return resp_api.json()
+
+def update_covid(id):
+    print("UPDATE COVID ID "+id)
+    resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
+    print("RESP:",resp_api.json())
+    return resp_api.json()
+
+def delete_covid(id):
+    print("DELETE COVID ID "+id)
+    resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
+    print("RESP:",resp_api.json())
+    return resp_api.json()
+
+# URL_ONEDATA_POST ---> créer une nouvelle donnée covid
+
+# URL_MULTIPLE_INFO_GET ---> faire + tard car implique un nouveau formulaire HTML
+
+# URL_UNIQUE_INFO_GET ---> faire + tard car implique un nouveau tableau HTML et modifs jinja
