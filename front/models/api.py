@@ -24,11 +24,11 @@ URL_ALLDATA_GET = HOST_API+"/covid/" # URL qui retourne toutes les données covi
 URL_ONEDATA_GET_PATCH_DELETE = HOST_API+"/covid/{data_id}/" # URL qui retourne/met à jour/supprime une donnée covid
 URL_ONEDATA_POST = HOST_API+"/covid/" # URL qui crée une nouvelle donnée covid 
 URL_UNIQUE_INFO_GET = HOST_API+"/covid/{info}/" # URL qui permet de retourner toutes les données uniques de certains colonnes 
-URL_MULTIPLE_INFO_GET = HOST_API+"/covid/search/?{info}" # URL qui renvoie les résultats d'une requête (simple ou multiple)
+URL_MULTIPLE_INFO_GET = HOST_API+"/covid/search?{info}" # URL qui renvoie les résultats d'une requête (simple ou multiple)
 
 # -----------------------------------------------------------------------
 
-__all__ = ['login_api','create_client','get_all_covid','get_covid_by_id','update_covid','delete_covid','get_multiple_info']
+__all__ = ['login_api','create_client','get_all_covid','get_covid_by_id','update_covid','delete_covid','get_multiple_info','add_covid']
 
 # -----------------------------------------------------------------------
 
@@ -40,10 +40,12 @@ def create_client(data):
     resp_api = requests.post(URL_USER_POST, data)
     return resp_api.json()
 
+# PB : fait freeze le pc car trop de données :(
 def get_all_covid():
     resp_api = requests.get(URL_ALLDATA_GET)
     return resp_api.status_code, resp_api.json()
 
+# (?) peut-être on peut zapper ça car se fait direct dans la recherche si on remplit que le champ id (?) à voir
 def get_covid_by_id(id):
     print("GET COVID ID "+id)
     resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
@@ -64,14 +66,20 @@ def delete_covid(id):
     return resp_api.json()
 
 # URL_ONEDATA_POST ---> créer une nouvelle donnée covid
+def add_covid(data):
+    print(data)
+    print(URL_ONEDATA_POST)
+    resp_api = requests.post(URL_ONEDATA_POST,data)
+    return resp_api.json()
 
 # URL_MULTIPLE_INFO_GET ---> exploiter le formulaire HTML
 def get_multiple_info(search_info):
-    print("Info to search "+str(search_info))
+    print("REQUEST : "+URL_MULTIPLE_INFO_GET.format(info = search_info))
     resp_api = requests.get(URL_MULTIPLE_INFO_GET.format(info = search_info))
     print("RESP:",resp_api.json())
-    print("CODE",resp_api.status_code)
-    return resp_api.status_code,resp_api.json()
+    return resp_api.json()
+    #print("CODE",resp_api.status_code)
+    #return resp_api.status_code,resp_api.json()
 
 
 # URL_UNIQUE_INFO_GET ---> faire + tard car implique un nouveau tableau HTML et modifs jinja

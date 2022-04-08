@@ -74,7 +74,7 @@
 <button type="submit" class="btn btn-primary btn-block btn-large">Récupérer les valeurs uniques</button>
 
 <!-- Affichage des données -->
-<table class="table table-light table-hover table-striped">
+<table class="table table-light table-hover table-striped overflow-auto">
 	<thead>
 	<tr>
 		<th scope="col">ID</th>
@@ -97,50 +97,64 @@
 	</tr>
 	</thead>
 	<tbody>
-		{% if many: %}
-			<!-- Affichage de plusieurs données -->
-			{% for row in output_data %}
+		{% if output_data: %}
+			{% if many: %}
+				<!-- Affichage de plusieurs données -->
+				{% for row in output_data %}
+					<tr>
+					<td>{{row.id}}</td>
+					<td>{{row.semaine_injection}}</td>
+					<td>{{row.commune_residence}}</td>
+					<td>{{row.libelle_commune}}</td>
+					<td>{{row.population_carto}}</td>
+					<td>{{row.classe_age}}</td>
+					<td>{{row.libelle_classe_age}}</td>
+					<td>{{row.effectif_1_inj}}</td>
+					<td>{{row.effectif_termine}}</td>
+					<td>{{row.effectif_cumu_1_inj}}</td>
+					<td>{{row.effectif_cumu_termine}}</td>
+					<td>{{row.taux_1_inj}}</td>
+					<td>{{row.taux_termine}}</td>
+					<td>{{row.taux_cumu_1_inj}}</td>
+					<td>{{row.taux_cumu_termine}}</td>
+					<td>{{row.date}}</td>
+					<td>{{row.date_reference}}</td>
+					</tr>
+				{% endfor %}
+			{% else: %}
+				<!-- Affichage d'1 seule donnée -->
 				<tr>
-				<td>{{row.id}}</td>
-				<td>{{row.semaine_injection}}</td>
-				<td>{{row.commune_residence}}</td>
-				<td>{{row.libelle_commune}}</td>
-				<td>{{row.population_carto}}</td>
-				<td>{{row.classe_age}}</td>
-				<td>{{row.libelle_classe_age}}</td>
-				<td>{{row.effectif_1_inj}}</td>
-				<td>{{row.effectif_termine}}</td>
-				<td>{{row.effectif_cumu_1_inj}}</td>
-				<td>{{row.effectif_cumu_termine}}</td>
-				<td>{{row.taux_1_inj}}</td>
-				<td>{{row.taux_termine}}</td>
-				<td>{{row.taux_cumu_1_inj}}</td>
-				<td>{{row.taux_cumu_termine}}</td>
-				<td>{{row.date}}</td>
-				<td>{{row.date_reference}}</td>
+					<td>{{output_data.id}}</td>
+					<td>{{output_data.semaine_injection}}</td>
+					<td>{{output_data.commune_residence}}</td>
+					<td>{{output_data.libelle_commune}}</td>
+					<td>{{output_data.population_carto}}</td>
+					<td>{{output_data.classe_age}}</td>
+					<td>{{output_data.libelle_classe_age}}</td>
+					<td>{{output_data.effectif_1_inj}}</td>
+					<td>{{output_data.effectif_termine}}</td>
+					<td>{{output_data.effectif_cumu_1_inj}}</td>
+					<td>{{output_data.effectif_cumu_termine}}</td>
+					<td>{{output_data.taux_1_inj}}</td>
+					<td>{{output_data.taux_termine}}</td>
+					<td>{{output_data.taux_cumu_1_inj}}</td>
+					<td>{{output_data.taux_cumu_termine}}</td>
+					<td>{{output_data.date}}</td>
+					<td>{{output_data.date_reference}}</td>
 				</tr>
-			{% endfor %}
+			{% endif %}
 		{% else: %}
-			<!-- Affichage d'1 seule donnée -->
-			<tr>
-				<td>{{output_data.id}}</td>
-				<td>{{output_data.semaine_injection}}</td>
-				<td>{{output_data.commune_residence}}</td>
-				<td>{{output_data.libelle_commune}}</td>
-				<td>{{output_data.population_carto}}</td>
-				<td>{{output_data.classe_age}}</td>
-				<td>{{output_data.libelle_classe_age}}</td>
-				<td>{{output_data.effectif_1_inj}}</td>
-				<td>{{output_data.effectif_termine}}</td>
-				<td>{{output_data.effectif_cumu_1_inj}}</td>
-				<td>{{output_data.effectif_cumu_termine}}</td>
-				<td>{{output_data.taux_1_inj}}</td>
-				<td>{{output_data.taux_termine}}</td>
-				<td>{{output_data.taux_cumu_1_inj}}</td>
-				<td>{{output_data.taux_cumu_termine}}</td>
-				<td>{{output_data.date}}</td>
-				<td>{{output_data.date_reference}}</td>
-			</tr>
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					{% for message in messages %}
+						<div class="form-group">
+							<div class="alert alert-danger" role="alert" id="alert-danger-login">
+								<strong>{{ message }}</strong>.
+							</div>
+						</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
 		{% endif %}
 	</tbody>
 </table>

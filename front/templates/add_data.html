@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="title">Ajouter une donnée COVID :</h1>
+{% if session['token']: %}
+	<p>Remplissez tous les champs :</p>
+	<form action="{{ url_for('covid.add_data') }}" method="post">
+		<div class="form-group row">
+			<div class="col">
+				<input id="semaine_injection" name="semaine_injection" type="text" pattern="[0-9]{4}-[0-9]{2}" class="form-control" placeholder="Semaine d'injection" required />
+			</div>
+			<div class="col">
+				<input id="date_reference" name="date_reference" type="text" class="form-control" placeholder="Date de référence" required />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col">
+				<input id="classe_age" name="classe_age" type="text" class="form-control" placeholder="Classe age" required />
+			</div>
+			<div class="col">
+				<input id="libelle_classe_age" name="libelle_classe_age" type="text" class="form-control" placeholder="Libellé classe âge" required />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col">
+				<input id="commune" name="commune" type="text" class="form-control" placeholder="Commune" required />
+			</div>
+			<div class="col">
+				<input id="libelle_commune" name="libelle_commune" type="text" class="form-control" placeholder="Libellé commune" required />
+			</div>
+			<div class="col">
+				<input id="population_carto" name="population_carto" type="text" class="form-control" placeholder="Population" required />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col">
+				<input id="effectif_1_inj" name="effectif_1_inj" type="text" class="form-control" placeholder="Effectif 1 injection" required />
+			</div>
+			<div class="col">
+				<input id="effectif_termine" name="effectif_termine" type="text" class="form-control" placeholder="Effectif terminé" required />
+			</div>
+			<div class="col">
+				<input id="effectif_cumu_1_inj" name="effectif_cumu_1_inj" type="text" class="form-control" placeholder="Effectif cumu 1 injection" required />
+			</div>
+			<div class="col">
+				<input id="effectif_cumu_termine" name="effectif_cumu_termine" type="text" class="form-control" placeholder="Effectif cumu terminé" required />
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="col">
+				<input id="taux_1_inj" name="taux_1_inj" type="text" class="form-control" placeholder="Taux 1 injection" required />
+			</div>
+			<div class="col">
+				<input id="taux_termine" name="taux_termine" type="text" class="form-control" placeholder="Taux terminé" required />
+			</div>
+			<div class="col">
+				<input id="taux_cumu_1_inj" name="taux_cumu_1_inj" type="text" class="form-control" placeholder="Taux cumu 1 injection" required />
+			</div>
+			<div class="col">
+				<input id="taux_cumu_termine" name="taux_cumu_termine" type="text" class="form-control" placeholder="Taux cumu terminé" required />
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary btn-block btn-large">Créer</button>
+	</form>
+	{% if output_data: %}
+		<!-- Affichage des données -->
+		<table class="table table-light table-hover table-striped overflow-auto">
+			<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Semaine d'injection</th>
+				<th scope="col">Commune de résidence</th>
+				<th scope="col">Libellé commune</th>
+				<th scope="col">Population carto</th>
+				<th scope="col">Classe d'âge</th>
+				<th scope="col">Libellé classe d'âge</th>
+				<th scope="col">Effectif 1 inj</th>
+				<th scope="col">Effectif terminé</th>
+				<th scope="col">Effectif cumu 1 inj</th>
+				<th scope="col">Effectif cumu terminé</th>
+				<th scope="col">Taux 1 injection</th>
+				<th scope="col">Taux terminé</th>
+				<th scope="col">Taux cumu 1 inj</th>
+				<th scope="col">Taux cumu terminé</th>
+				<th scope="col">Date</th>
+				<th scope="col">Date de référence</th>
+			</tr>
+			</thead>
+			<tbody>
+				<!-- Affichage d'1 seule donnée -->
+				<tr>
+					<td>{{output_data.id}}</td>
+					<td>{{output_data.semaine_injection}}</td>
+					<td>{{output_data.commune_residence}}</td>
+					<td>{{output_data.libelle_commune}}</td>
+					<td>{{output_data.population_carto}}</td>
+					<td>{{output_data.classe_age}}</td>
+					<td>{{output_data.libelle_classe_age}}</td>
+					<td>{{output_data.effectif_1_inj}}</td>
+					<td>{{output_data.effectif_termine}}</td>
+					<td>{{output_data.effectif_cumu_1_inj}}</td>
+					<td>{{output_data.effectif_cumu_termine}}</td>
+					<td>{{output_data.taux_1_inj}}</td>
+					<td>{{output_data.taux_termine}}</td>
+					<td>{{output_data.taux_cumu_1_inj}}</td>
+					<td>{{output_data.taux_cumu_termine}}</td>
+					<td>{{output_data.date}}</td>
+					<td>{{output_data.date_reference}}</td>
+				</tr>
+			</tbody>
+		</table>
+	{% endif %}
+{% else: %}
+	<p>Votre session est arrivée à expiration. Merci de vous reconnecter.</p> <!-- Tester comment marche l'expiration -->
+{% endif %}
+
+{% endblock %}
