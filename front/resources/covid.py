@@ -1,7 +1,7 @@
 from cmath import log
 from inspect import BoundArguments
 from flask import Blueprint, request, flash, redirect, render_template, session, url_for
-from front.models.api import get_all_covid, get_covid_by_id, get_multiple_info, add_covid
+from front.models.api import get_all_covid, get_covid_by_id, get_multiple_info, add_covid, update_covid
 from front.resources.user import login_required
 
 covid = Blueprint('covid', __name__)
@@ -79,7 +79,6 @@ def data_seperation():
     elif request.method == 'GET':
         return render_template('all.html')
 
-
 # Créer une nouvelle donnée
 @covid.route('/data/new',methods=('GET', 'POST'))
 @login_required
@@ -100,3 +99,32 @@ def add_data(token):
         return render_template('add_data.html', output_data=data_resp)
     elif request.method == 'GET':
         return render_template('add_data.html')
+
+# Modifier une donnée
+@covid.route('/data/update',methods=('GET', 'POST'))
+@login_required
+def update_data(token):
+    if request.method == 'POST':
+        if 'id_data_to_update' in request.form:
+            id = request.form.get('id_data_to_update')
+            api_resp = get_covid_by_id(id)
+            code_resp = api_resp[0]
+            data_resp = api_resp[1]
+            return render_template('update_data.html', output_data=data_resp, id=str(id))
+        else:
+            data_json = request.form.to_dict()
+            id = request.form.get('id')
+            api_resp = update_covid(token,id,data=data_json)
+            code_resp = api_resp[0] # status code
+            data_resp = api_resp[1] # une donnée covid à ajoutée au format json
+            if code_resp not in [200, 201]:
+                flash('Veuillez vous connecter.')
+                return redirect(url_for('users.login'))
+            # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+            # si on veut écrire des trucs
+            #flash("Donnée modifiée")
+            #flash("Impossible de modifier la donnée à partir de votre saisie")
+            #(on pourrait aussi mettre des conditions sur les champs du formulaire pour pas que l'utilisateur saisisse n'importe quoi)
+            return render_template('update_data.html', output_data=data_resp, id_updated=id)
+    elif request.method == 'GET':
+        return render_template('update_data.html')

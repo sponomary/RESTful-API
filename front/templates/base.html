@@ -27,8 +27,8 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="{{ url_for('covid.data') }}" role="button" aria-haspopup="true" aria-expanded="false">Actions</a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<li><a class="dropdown-item" href="{{ url_for('covid.add_data') }}">Ajouter</a></li> <!-- EN COURS DE TEST ! -->
-						<li><a class="dropdown-item" href="#">Modifier</a></li>
+						<li><a class="dropdown-item" href="{{ url_for('covid.add_data') }}">Ajouter</a></li>
+						<li><a class="dropdown-item" href="{{ url_for('covid.update_data') }}">Modifier</a></li>
 						<li><a class="dropdown-item" href="#">Supprimer</a></li>
 					</ul>
 				</li>

@@ -58,6 +58,7 @@ def get_all_covid(data_range):
 
 # (?) peut-être on peut zapper ça car se fait direct dans la recherche si on remplit que le champ id (?) à voir
 # Je suis d'accord pour enlever ça, ça rend plus prore ---lulu
+# elise --- Non en fait on peut le laisser ici pour l'appeler pour update_data ?
 def get_covid_by_id(id):
     print("GET COVID ID "+id)
     resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
@@ -65,17 +66,19 @@ def get_covid_by_id(id):
     print("code:",resp_api.status_code)
     return resp_api.status_code, resp_api.json()
 
-def update_covid(id):
+def update_covid(token,id,data):
     print("UPDATE COVID ID "+id)
-    resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
-    print("RESP:",resp_api.json())
-    return resp_api.json()
+    headers = {"x-access-token": token}
+    print("TOKEN:",token)
+    resp_api = requests.patch(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id),data,headers=headers)
+    return resp_api.status_code, resp_api.json()
 
-def delete_covid(id):
+def delete_covid(token,id):
     print("DELETE COVID ID "+id)
-    resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
-    print("RESP:",resp_api.json())
-    return resp_api.json()
+    headers = {"x-access-token": token}
+    print("TOKEN:",token)
+    resp_api = requests.delete(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id),headers=headers)
+    return resp_api.status_code, resp_api.json()
 
 # URL_ONEDATA_POST ---> créer une nouvelle donnée covid
 def add_covid(token,data):
