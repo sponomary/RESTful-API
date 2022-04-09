@@ -25,7 +25,12 @@ def get_all_covid():
     total_data = seperate_data['count']
     data_covid_schema = DataCovidSchema(many=True)
     #print(jsonify(data_covid_schema.dump(seperate_data['results'])))
-    return jsonify(data_covid_schema.dump(seperate_data['results']))
+    print(total_data)
+    return jsonify(
+        {
+            "Total data":total_data,
+            "Data":data_covid_schema.dump(seperate_data['results'])
+        })
 
 
 

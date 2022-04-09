@@ -73,7 +73,8 @@ def data_seperation():
         api_resp = get_all_covid(html_params) #retourne toutes les données covid par défaut
         code_resp = api_resp[0] # status code
         data_resp = api_resp[1] # les données covid au format json
-        return render_template('all.html', output_data=data_resp, many=True)
+        total_data_nb = api_resp[2] # 🐽🐽🐽🐽🐽🐽🐽 nombre total des données dans BD, comment affciher ça sur notre page ? 🐽🐽🐽🐽🐽🐽🐽
+        return render_template('all.html', output_data=data_resp, nb=total_data_nb, many=True)
     
     elif request.method == 'GET':
         return render_template('all.html')
