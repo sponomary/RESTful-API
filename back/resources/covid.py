@@ -5,7 +5,7 @@ from flask import Blueprint
 from ..models.covid import DataCovidModel, DataCovidSchema
 from ..models.db import db
 from flask import request, jsonify
-from ..lib.utils import token_required
+from ..lib.utils import token_required,get_paginated_list
 from datetime import datetime
 
 covid = Blueprint('covid', __name__)
@@ -14,9 +14,19 @@ covid = Blueprint('covid', __name__)
 # Route qui retourne toutes les données covid ✅
 @covid.route('/', methods=["GET"])
 def get_all_covid():
-    result = DataCovidModel.query.all()
+    result = DataCovidModel.query.all() 
+    seperate_data = get_paginated_list(
+        result, 
+        '/', 
+        start=request.args.get('start', 1), 
+        limit=request.args.get('limit', 20)
+    )
+    #print(seperate_data['results'])
+    total_data = seperate_data['count']
     data_covid_schema = DataCovidSchema(many=True)
-    return jsonify(data_covid_schema.dump(result))
+    #print(jsonify(data_covid_schema.dump(seperate_data['results'])))
+    return jsonify(data_covid_schema.dump(seperate_data['results']))
+
 
 
 # Route qui met à jour une donnée covid ✅
