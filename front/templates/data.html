@@ -6,57 +6,75 @@
 <form action="{{ url_for('covid.data') }}" method="post">
 	<div class="form-group row">
 		<div class="col">
-			<input id="id" name="id" type="text" class="form-control" placeholder="Identifiant"/>
+			<input id="id" name="id" type="number" class="form-control" placeholder="Identifiant"/>
 		</div>
 		<div class="col">
 			<input id="semaine_injection" name="semaine_injection" type="text" pattern="[0-9]{4}-[0-9]{2}" class="form-control" placeholder="Semaine d'injection"/>
 		</div>
 	</div>
 	<div class="form-group row">
-		<div class="col">
-			<input id="classe_age" name="classe_age" type="text" class="form-control" placeholder="Classe age"/>
-		</div>
-		<div class="col">
-			<input id="libelle_classe_age" name="libelle_classe_age" type="text" class="form-control" placeholder="Libellé classe âge"/>
-		</div>
+			<div class="col">
+				<input id="classe_age" name="classe_age" type="text" class="form-control" placeholder="Classe age" list="age"/>
+					<datalist id="age">
+						<option value="00-19">
+						<option value="20-39">
+						<option value="40-54">
+						<option value="55-64">
+						<option value="65-74">
+						<option value="75 et +">
+						<option value="TOUT_AGE">
+					</datalist>
+			</div>
+			<div class="col">
+				<input id="libelle_classe_age" name="libelle_classe_age" type="text" class="form-control" placeholder="Libellé classe âge" list="libelle_age"/>
+					<datalist id="libelle_age">
+						<option value="moins de 20 ans">
+						<option value="de 20 à 39 ans">
+						<option value="de 40 à 54 ans">
+						<option value="de 55 à 64 ans">
+						<option value="de 65 à 74 ans">
+						<option value="75 ans et plus">
+						<option value="Tout âge">
+					</datalist>
+			</div>
 	</div>
 	<div class="form-group row">
 		<div class="col">
-			<input id="commune" name="commune" type="text" class="form-control" placeholder="Commune"/>
+			<input id="commune" name="commune_residence" type="number" class="form-control" placeholder="Code postal"/>
 		</div>
 		<div class="col">
 			<input id="libelle_commune" name="libelle_commune" type="text" class="form-control" placeholder="Libellé commune"/>
 		</div>
 		<div class="col">
-			<input id="population_carto" name="population_carto" type="text" class="form-control" placeholder="Population"/>
+			<input id="population_carto" name="population_carto" type="number" class="form-control" placeholder="Population"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col">
-			<input id="effectif_1_inj" name="effectif_1_inj" type="text" class="form-control" placeholder="Effectif 1 injection"/>
+			<input id="effectif_1_inj" name="effectif_1_inj" type="number" class="form-control" placeholder="Effectif 1 injection"/>
 		</div>
 		<div class="col">
-			<input id="effectif_termine" name="effectif_termine" type="text" class="form-control" placeholder="Effectif terminé"/>
+			<input id="effectif_termine" name="effectif_termine" type="number" class="form-control" placeholder="Effectif terminé"/>
 		</div>
 		<div class="col">
-			<input id="effectif_cumu_1_inj" name="effectif_cumu_1_inj" type="text" class="form-control" placeholder="Effectif cumu 1 injection"/>
+			<input id="effectif_cumu_1_inj" name="effectif_cumu_1_inj" type="number" class="form-control" placeholder="Effectif cumu 1 injection"/>
 		</div>
 		<div class="col">
-			<input id="effectif_cumu_termine" name="effectif_cumu_termine" type="text" class="form-control" placeholder="Effectif cumu terminé"/>
+			<input id="effectif_cumu_termine" name="effectif_cumu_termine" type="number" class="form-control" placeholder="Effectif cumu terminé"/>
 		</div>
 	</div>
 	<div class="form-group row">
 		<div class="col">
-			<input id="taux_1_inj" name="taux_1_inj" type="text" class="form-control" placeholder="Taux 1 injection"/>
+			<input id="taux_1_inj" name="taux_1_inj" type="number" step="0.001" class="form-control" placeholder="Taux 1 injection"/>
 		</div>
 		<div class="col">
-			<input id="taux_termine" name="taux_termine" type="text" class="form-control" placeholder="Taux terminé"/>
+			<input id="taux_termine" name="taux_termine" type="number" step="0.001" class="form-control" placeholder="Taux terminé"/>
 		</div>
 		<div class="col">
-			<input id="taux_cumu_1_inj" name="taux_cumu_1_inj" type="text" class="form-control" placeholder="Taux cumu 1 injection"/>
+			<input id="taux_cumu_1_inj" name="taux_cumu_1_inj" type="number" step="0.001" class="form-control" placeholder="Taux cumu 1 injection"/>
 		</div>
 		<div class="col">
-			<input id="taux_cumu_termine" name="taux_cumu_termine" type="text" class="form-control" placeholder="Taux cumu terminé"/>
+			<input id="taux_cumu_termine" name="taux_cumu_termine" type="number" step="0.001" class="form-control" placeholder="Taux cumu terminé"/>
 		</div>
 	</div>
 	<div class="form-group row">
@@ -102,23 +120,23 @@
 				<!-- Affichage de plusieurs données -->
 				{% for row in output_data %}
 					<tr>
-					<td>{{row.id}}</td>
-					<td>{{row.semaine_injection}}</td>
-					<td>{{row.commune_residence}}</td>
-					<td>{{row.libelle_commune}}</td>
-					<td>{{row.population_carto}}</td>
-					<td>{{row.classe_age}}</td>
-					<td>{{row.libelle_classe_age}}</td>
-					<td>{{row.effectif_1_inj}}</td>
-					<td>{{row.effectif_termine}}</td>
-					<td>{{row.effectif_cumu_1_inj}}</td>
-					<td>{{row.effectif_cumu_termine}}</td>
-					<td>{{row.taux_1_inj}}</td>
-					<td>{{row.taux_termine}}</td>
-					<td>{{row.taux_cumu_1_inj}}</td>
-					<td>{{row.taux_cumu_termine}}</td>
-					<td>{{row.date}}</td>
-					<td>{{row.date_reference}}</td>
+						<td>{{row.id}}</td>
+						<td>{{row.semaine_injection}}</td>
+						<td>{{row.commune_residence}}</td>
+						<td>{{row.libelle_commune}}</td>
+						<td>{{row.population_carto}}</td>
+						<td>{{row.classe_age}}</td>
+						<td>{{row.libelle_classe_age}}</td>
+						<td>{{row.effectif_1_inj}}</td>
+						<td>{{row.effectif_termine}}</td>
+						<td>{{row.effectif_cumu_1_inj}}</td>
+						<td>{{row.effectif_cumu_termine}}</td>
+						<td>{{row.taux_1_inj}}</td>
+						<td>{{row.taux_termine}}</td>
+						<td>{{row.taux_cumu_1_inj}}</td>
+						<td>{{row.taux_cumu_termine}}</td>
+						<td>{{row.date}}</td>
+						<td>{{row.date_reference}}</td>
 					</tr>
 				{% endfor %}
 			{% else: %}
