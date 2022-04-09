@@ -31,7 +31,7 @@ def data():
             flash("Aucune donnée ne correspond à votre recherche")
             #flash("Aucune donnée ne correspond à votre recherche : %s"%status_code)
             return render_template('data.html')
-        
+     
     elif request.method == 'GET':
         """ 
         # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
@@ -41,13 +41,43 @@ def data():
         code_resp = api_resp[0] # status code
         data_resp = api_resp[1] # les données covid au format json
         return render_template('data.html', output_data=data_resp, many=True)
-        """ 
+        """
         # POUR RECUPERER 1 DONNEE A PARTIR DE SON ID : 
         api_resp = get_covid_by_id(str(500)) # TEST DE LA FONCTION SUR LA REQUETE POUR 1 DONNEE SUR l'ID 500
         code_resp = api_resp[0] # status code
         data_resp = api_resp[1] # une donnée covid au format json
         #print("one data",data_resp)
         return render_template('data.html', output_data=data_resp, many=False)
+
+
+# Afficher les données par paquet
+@covid.route('/data/search',methods=('GET', 'POST'))
+def data_seperation():    
+    if request.method == 'POST':
+        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+        # concrètement j'ai plagié ton code magnifique
+        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+        body_data = request.form.to_dict() # récupère toutes les champs du formulaire
+        # Récupération des champs pour lesquels une valeur est saisie uniquement
+        # + Mise en forme au format de requête HTML
+        # Exemple : {'libelle_commune': 'ANTONY', 'population_carto':14810}
+        #          --> libelle_commune=ANTONY&population_carto=14810
+        print(body_data)
+        html_params = ""
+        for k,v in body_data.items():
+            if v != '':
+                if html_params != '':
+                    html_params += "&"
+                html_params += k + "=" + v
+        print("URL:",html_params)
+        api_resp = get_all_covid(html_params) #retourne toutes les données covid par défaut
+        code_resp = api_resp[0] # status code
+        data_resp = api_resp[1] # les données covid au format json
+        return render_template('all.html', output_data=data_resp, many=True)
+    
+    elif request.method == 'GET':
+        return render_template('all.html')
+
 
 # Créer une nouvelle donnée
 @covid.route('/data/new',methods=('GET', 'POST'))
