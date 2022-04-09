@@ -76,13 +76,10 @@ def delete_covid(id):
 
 # URL_ONEDATA_POST ---> créer une nouvelle donnée covid
 def add_covid(token,data):
-    print(data)
-    print(URL_ONEDATA_POST)
+    print("ADD COVID DATA :"+str(data))
     headers = {"x-access-token": token}
     print("TOKEN:",token)
     resp_api = requests.post(URL_ONEDATA_POST,data,headers=headers)
-    print("RESP:",resp_api.json())
-    print("CODE:",resp_api.status_code)
     return resp_api.status_code,resp_api.json()
 
 # URL_MULTIPLE_INFO_GET ---> exploiter le formulaire HTML

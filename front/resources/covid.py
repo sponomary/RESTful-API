@@ -84,26 +84,18 @@ def data_seperation():
 @login_required
 def add_data(token):
     if request.method == 'POST':
-        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-        # PLAGIER SEIGNEUR ET AJOUTER TOKEN DANS HEADER !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        # SINON RENVOIE 'Token is missing !!'
         data_json = request.form.to_dict()
-        print("FORM_DATA:",data_json)
-        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-        # erreur très bizarre à cette étape, j'ai l'impression que ça vient de la colonne date_reference
-        api_resp = add_covid(token,data_json) 
-        print("API_RESP:" + str(api_resp))
-
-        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-        # FAIRE UN IF SUR LE STATUS CODE :
+        api_resp = add_covid(token,data=data_json)
         code_resp = api_resp[0] # status code
         data_resp = api_resp[1] # une donnée covid à ajoutée au format json
         if code_resp not in [200, 201]:
             flash('Veuillez vous connecter.')
             return redirect(url_for('users.login'))
+        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
+        # si on veut écrire des trucs
         #flash("Donnée ajoutée")
         #flash("Impossible de créer une donnée à partir de votre saisie")
-        #(on pourrait aussi mettre des conditions sur les champs du formulaire)
-        return render_template('add_data.html', output_data=api_resp)
+        #(on pourrait aussi mettre des conditions sur les champs du formulaire pour pas que l'utilisateur saisisse n'importe quoi)
+        return render_template('add_data.html', output_data=data_resp)
     elif request.method == 'GET':
         return render_template('add_data.html')
