@@ -46,9 +46,12 @@ def get_all_covid(data_range):
     # il faut que url passé à requests.get ressemble à ca : http://dataviewer.api.localhost:5000/api/covid/?start=1&limit=5
     print("REQUEST : "+URL_ALLDATA_GET.format(data_range = data_range))
     resp_api = requests.get(URL_ALLDATA_GET.format(data_range = data_range))
+    print("REPONSE BACK:",resp_api)
     print("CODE:",resp_api.status_code)
     print("RESP:",resp_api.json())
-    return resp_api.status_code, resp_api.json()
+    data = resp_api.json()['Data']
+    nb_total_data = resp_api.json()['Total data'] # récupérer nombres totales de données disponibles dans BD
+    return resp_api.status_code, data, nb_total_data
     #resp_api = requests.get(URL_ALLDATA_GET)
     #return resp_api.status_code, resp_api.json()
 
