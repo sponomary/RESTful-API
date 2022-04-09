@@ -1,7 +1,8 @@
 from cmath import log
 from inspect import BoundArguments
 from flask import Blueprint, request, flash, redirect, render_template, session, url_for
-from front.models.api import get_all_covid, get_covid_by_id, get_multiple_info, add_covid, update_covid
+from back.resources.covid import delete_covid
+from front.models.api import get_all_covid, get_covid_by_id, get_multiple_info, add_covid, update_covid, delete_covid
 from front.resources.user import login_required
 
 covid = Blueprint('covid', __name__)
@@ -110,6 +111,9 @@ def update_data(token):
             api_resp = get_covid_by_id(id)
             code_resp = api_resp[0]
             data_resp = api_resp[1]
+            if data_resp == {}:
+                flash("Error: Il n'existe pas de donnée d'identifiant "+str(id))
+                return render_template('update_data.html')
             return render_template('update_data.html', output_data=data_resp, id=str(id))
         else:
             data_json = request.form.to_dict()
@@ -128,3 +132,29 @@ def update_data(token):
             return render_template('update_data.html', output_data=data_resp, id_updated=id)
     elif request.method == 'GET':
         return render_template('update_data.html')
+
+# Supprimer une donnée
+@covid.route('/data/delete',methods=('GET', 'POST'))
+@login_required
+def delete_data(token):
+    if request.method == 'POST':
+        if 'id_data_to_delete' in request.form:
+            id = request.form.get('id_data_to_delete')
+            api_resp = get_covid_by_id(id)
+            code_resp = api_resp[0]
+            data_resp = api_resp[1]
+            if data_resp == {}:
+                flash("Error: Il n'existe pas de donnée d'identifiant "+str(id))
+                return render_template('delete_data.html')
+            return render_template('delete_data.html', output_data=data_resp, id=str(id))
+        else:
+            id = request.form.get("id")
+            api_resp = delete_covid(token,id)
+            code_resp = api_resp[0] # status code
+            data_resp = api_resp[1] # une donnée covid supprimée au format json
+            if code_resp not in [200, 201]:
+                flash('Veuillez vous connecter.')
+                return redirect(url_for('users.login'))
+            return render_template('delete_data.html', output_data=data_resp, id_deleted=id)
+    elif request.method == 'GET':
+        return render_template('delete_data.html')

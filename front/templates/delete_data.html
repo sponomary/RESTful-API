@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if session['token']: %}
+	{% if id: %}
+		<h1 class="title">Supprimer la donnée COVID d'identifiant {{id}} :</h1>
+		<!-- Affichage des données -->
+		<table class="table table-light table-hover table-striped overflow-auto">
+			<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Semaine d'injection</th>
+				<th scope="col">Commune de résidence</th>
+				<th scope="col">Libellé commune</th>
+				<th scope="col">Population carto</th>
+				<th scope="col">Classe d'âge</th>
+				<th scope="col">Libellé classe d'âge</th>
+				<th scope="col">Effectif 1 inj</th>
+				<th scope="col">Effectif terminé</th>
+				<th scope="col">Effectif cumu 1 inj</th>
+				<th scope="col">Effectif cumu terminé</th>
+				<th scope="col">Taux 1 injection</th>
+				<th scope="col">Taux terminé</th>
+				<th scope="col">Taux cumu 1 inj</th>
+				<th scope="col">Taux cumu terminé</th>
+				<th scope="col">Date</th>
+				<th scope="col">Date de référence</th>
+			</tr>
+			</thead>
+			<tbody>
+				<!-- Affichage d'1 seule donnée -->
+				<tr>
+					<td>{{output_data.id}}</td>
+					<td>{{output_data.semaine_injection}}</td>
+					<td>{{output_data.commune_residence}}</td>
+					<td>{{output_data.libelle_commune}}</td>
+					<td>{{output_data.population_carto}}</td>
+					<td>{{output_data.classe_age}}</td>
+					<td>{{output_data.libelle_classe_age}}</td>
+					<td>{{output_data.effectif_1_inj}}</td>
+					<td>{{output_data.effectif_termine}}</td>
+					<td>{{output_data.effectif_cumu_1_inj}}</td>
+					<td>{{output_data.effectif_cumu_termine}}</td>
+					<td>{{output_data.taux_1_inj}}</td>
+					<td>{{output_data.taux_termine}}</td>
+					<td>{{output_data.taux_cumu_1_inj}}</td>
+					<td>{{output_data.taux_cumu_termine}}</td>
+					<td>{{output_data.date}}</td>
+					<td>{{output_data.date_reference}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<form action="{{ url_for('covid.delete_data') }}" method="post">
+			<button type="submit" name="id" value="{{id}}" class="btn btn-primary btn-block btn-large">Confirmer la suppression</button>
+		</form>
+	{% elif id_deleted: %}
+		<h1 class="title">Donnée COVID d'identifiant {{id_deleted}} supprimée :</h1>
+		<!-- Affichage des données -->
+		<table class="table table-light table-hover table-striped overflow-auto">
+			<thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Semaine d'injection</th>
+				<th scope="col">Commune de résidence</th>
+				<th scope="col">Libellé commune</th>
+				<th scope="col">Population carto</th>
+				<th scope="col">Classe d'âge</th>
+				<th scope="col">Libellé classe d'âge</th>
+				<th scope="col">Effectif 1 inj</th>
+				<th scope="col">Effectif terminé</th>
+				<th scope="col">Effectif cumu 1 inj</th>
+				<th scope="col">Effectif cumu terminé</th>
+				<th scope="col">Taux 1 injection</th>
+				<th scope="col">Taux terminé</th>
+				<th scope="col">Taux cumu 1 inj</th>
+				<th scope="col">Taux cumu terminé</th>
+				<th scope="col">Date</th>
+				<th scope="col">Date de référence</th>
+			</tr>
+			</thead>
+			<tbody>
+				<!-- Affichage d'1 seule donnée -->
+				<tr>
+					<td>{{output_data.id}}</td>
+					<td>{{output_data.semaine_injection}}</td>
+					<td>{{output_data.commune_residence}}</td>
+					<td>{{output_data.libelle_commune}}</td>
+					<td>{{output_data.population_carto}}</td>
+					<td>{{output_data.classe_age}}</td>
+					<td>{{output_data.libelle_classe_age}}</td>
+					<td>{{output_data.effectif_1_inj}}</td>
+					<td>{{output_data.effectif_termine}}</td>
+					<td>{{output_data.effectif_cumu_1_inj}}</td>
+					<td>{{output_data.effectif_cumu_termine}}</td>
+					<td>{{output_data.taux_1_inj}}</td>
+					<td>{{output_data.taux_termine}}</td>
+					<td>{{output_data.taux_cumu_1_inj}}</td>
+					<td>{{output_data.taux_cumu_termine}}</td>
+					<td>{{output_data.date}}</td>
+					<td>{{output_data.date_reference}}</td>
+				</tr>
+			</tbody>
+		</table>
+	{% else: %}
+		<h1 class="title">Supprimer une donnée COVID :</h1>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for message in messages %}
+					<div class="form-group">
+						<div class="alert alert-danger" role="alert" id="alert-success-login">
+							<strong>{{ message }}</strong>.
+						</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		<p>Saisissez l'identifiant de la donnée à supprimer :</p>
+		<form action="{{ url_for('covid.delete_data') }}" method="post">
+			<input id="id_data_to_delete" name="id_data_to_delete" type="number" class="form-control" placeholder="identifiant" required />
+			<button type="submit" class="btn btn-primary btn-block btn-large">Supprimer</button>
+		</form>
+	{% endif %}
+{% else: %}
+	<h1 class="title">Modifier une donnée COVID :</h1>
+	<p>Votre session est arrivée à expiration. Merci de vous reconnecter.</p> <!-- Tester comment marche l'expiration -->
+{% endif %}
+
+{% endblock %}
