@@ -20,8 +20,8 @@ HOST_API = "http://dataviewer.api.localhost:5000/api"
 #HOST_API = "http://127.0.0.1:5000/api"
 URL_LOGIN = HOST_API+"/login"
 URL_USER_POST = HOST_API+"/register"
-#URL_ALLDATA_GET = HOST_API+"/covid/" # URL qui retourne toutes les données covid 
-URL_ALLDATA_GET = HOST_API+"/covid/?{data_range}" # URL qui retourne toutes les données covid par paquet 
+URL_ALLDATA_GET = HOST_API+"/covid/" # URL qui retourne toutes les données covid 
+#URL_ALLDATA_GET = HOST_API+"/covid/?{data_range}" # URL qui retourne toutes les données covid par paquet 
 URL_ONEDATA_GET_PATCH_DELETE = HOST_API+"/covid/{data_id}/" # URL qui retourne/met à jour/supprime une donnée covid
 URL_ONEDATA_POST = HOST_API+"/covid/" # URL qui crée une nouvelle donnée covid 
 URL_UNIQUE_INFO_GET = HOST_API+"/covid/{info}/" # URL qui permet de retourner toutes les données uniques de certains colonnes 
@@ -43,16 +43,20 @@ def create_client(data):
 
 #URL_ALLDATA_GET ---> obtenir toutes les données covid (nb max)
 # PB : fait freeze le pc car trop de données :(
-def get_all_covid(data_range):
+def get_all_covid():
     # il faut que url passé à requests.get ressemble à ca : http://dataviewer.api.localhost:5000/api/covid/?start=1&limit=5
-    print("REQUEST : "+URL_ALLDATA_GET.format(data_range = data_range))
-    resp_api = requests.get(URL_ALLDATA_GET.format(data_range = data_range))
-    print("REPONSE BACK:",resp_api)
+    #print("REQUEST : "+URL_ALLDATA_GET.format(data_range = data_range))
+    #resp_api = requests.get(URL_ALLDATA_GET.format(data_range = data_range))
+    #print("REPONSE BACK:",resp_api)
+    print("REQUEST GET ALL DATA")
+    resp_api = requests.get(URL_ALLDATA_GET)
+    print("RESP", len(resp_api.json()))
     print("CODE:",resp_api.status_code)
-    print("RESP:",resp_api.json())
-    data = resp_api.json()['Data']
-    nb_total_data = resp_api.json()['Total data'] # récupérer nombres totales de données disponibles dans BD
-    return resp_api.status_code, data, nb_total_data
+    #print("RESP:",resp_api.json())
+    return resp_api.status_code, resp_api.json()
+    #data = resp_api.json()['Data']
+    #nb_total_data = resp_api.json()['Total data'] # récupérer nombres totales de données disponibles dans BD
+    #return resp_api.status_code, data, nb_total_data
     #resp_api = requests.get(URL_ALLDATA_GET)
     #return resp_api.status_code, resp_api.json()
 

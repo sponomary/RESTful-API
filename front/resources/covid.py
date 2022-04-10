@@ -11,6 +11,7 @@ covid = Blueprint('covid', __name__)
 # Afficher et rechercher des données
 @covid.route('/data',methods=('GET', 'POST'))
 def data():
+    #Affiche les données selon la requête de l'utilisateur
     if request.method == 'POST':
         body_data = request.form.to_dict() # récupère toutes les champs du formulaire
         # Récupération des champs pour lesquels une valeur est saisie uniquement
@@ -31,23 +32,15 @@ def data():
             flash("Aucune donnée ne correspond à votre recherche")
             return render_template('data.html')
      
+    #Affiche toutes les données (5000 données max par défaut)
     elif request.method == 'GET':
-        """ 
-        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-        # POUR RECUPERER TOUTES LES DONNEES (ce qu'on devrait mettre par défaut) : 
-        # ----> FREEZE LE PC :( peut-être voir si il existe un truc pour envoyer les données par paquets plutôt que tout d'un coup ?
-        api_resp = get_all_covid() #retourne toutes les données covid par défaut
+        api_resp = get_all_covid()
         code_resp = api_resp[0] # status code
-        data_resp = api_resp[1] # les données covid au format json
+        data_resp = api_resp[1] # données covid
         return render_template('data.html', output_data=data_resp, many=True)
-        """
-        # POUR RECUPERER 1 DONNEE A PARTIR DE SON ID : 
-        api_resp = get_covid_by_id(str(500)) # TEST DE LA FONCTION SUR LA REQUETE POUR 1 DONNEE SUR l'ID 500
-        code_resp = api_resp[0] # status code
-        data_resp = api_resp[1] # une donnée covid au format json
-        #print("one data",data_resp)
-        return render_template('data.html', output_data=data_resp, many=False)
 
+"""
+# CODE LUFEI TEST PAGINATION
 
 # Afficher les données par paquet
 @covid.route('/data/search',methods=('GET', 'POST'))
@@ -77,6 +70,7 @@ def data_seperation():
     
     elif request.method == 'GET':
         return render_template('all.html')
+"""
 
 # Créer une nouvelle donnée
 @covid.route('/data/new',methods=('GET', 'POST'))

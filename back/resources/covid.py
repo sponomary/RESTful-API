@@ -13,6 +13,15 @@ covid = Blueprint('covid', __name__)
 
 # Route qui retourne toutes les données covid ✅
 @covid.route('/', methods=["GET"])
+def get_all_covid(limit=5000):
+    results = DataCovidModel.query.limit(limit).all()
+    data_covid_schema = DataCovidSchema(many=True)
+    return jsonify(data_covid_schema.dump(results))
+
+"""
+# CODE LUFEI TEST PAGINATION
+
+@covid.route('/', methods=["GET"])
 def get_all_covid():
     result = DataCovidModel.query.all() 
     seperate_data = get_paginated_list(
@@ -31,6 +40,7 @@ def get_all_covid():
             "Total data":total_data,
             "Data":data_covid_schema.dump(seperate_data['results'])
         })
+"""
 
 
 
