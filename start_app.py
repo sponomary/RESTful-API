@@ -50,7 +50,7 @@ application = DispatcherMiddleware(frontend, {
 dataviewer_app = Flask(__name__)
 dataviewer_app.wsgi_app = application
 dataviewer_app.config['DEBUG'] = True
-dataviewer_app.config['SERVER_NAME'] = 'dataviewer.api.localhost:5000'
+dataviewer_app.config['SERVER_NAME'] = 'dataviewer.localhost:5000'
 
 # ------------------------------------------------------------------
 
