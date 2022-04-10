@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if session['token']: %}
-	{% if id: %}
-		<h1 class="title">Supprimer la donnée COVID d'identifiant {{id}} :</h1>
-		<!-- Affichage des données -->
+<h1 class="title">Supprimer une donnée COVID</h1>
+{% if id: %}
+	<h3 class="title">Voulez-vous vraiment supprimer la donnée {{id}} ?</h3>
+	<!-- Affichage des données -->
+	<div class="table-responsive">
 		<table class="table table-light table-hover table-striped overflow-auto">
 			<thead>
 			<tr>
@@ -50,12 +51,14 @@
 				</tr>
 			</tbody>
 		</table>
-		<form action="{{ url_for('covid.delete_data') }}" method="post">
-			<button type="submit" name="id" value="{{id}}" class="btn btn-primary btn-block btn-large">Confirmer la suppression</button>
-		</form>
+	</div>
+	<form action="{{ url_for('covid.delete_data') }}" method="post">
+		<button type="submit" name="id" value="{{id}}" class="btn btn-primary btn-block btn-large">Confirmer la suppression</button>
+	</form>
 	{% elif id_deleted: %}
-		<h1 class="title">Donnée COVID d'identifiant {{id_deleted}} supprimée :</h1>
-		<!-- Affichage des données -->
+	<h3 class="title">Donnée {{id_deleted}} supprimée !</h3>
+	<!-- Affichage des données -->
+	<div class="table-responsive">
 		<table class="table table-light table-hover table-striped overflow-auto">
 			<thead>
 			<tr>
@@ -101,28 +104,24 @@
 				</tr>
 			</tbody>
 		</table>
-	{% else: %}
-		<h1 class="title">Supprimer une donnée COVID :</h1>
-		{% with messages = get_flashed_messages() %}
-			{% if messages %}
-				{% for message in messages %}
-					<div class="form-group">
-						<div class="alert alert-danger" role="alert" id="alert-success-login">
-							<strong>{{ message }}</strong>.
-						</div>
-					</div>
-				{% endfor %}
-			{% endif %}
-		{% endwith %}
-		<p>Saisissez l'identifiant de la donnée à supprimer :</p>
-		<form action="{{ url_for('covid.delete_data') }}" method="post">
-			<input id="id_data_to_delete" name="id_data_to_delete" type="number" class="form-control" placeholder="identifiant" required />
-			<button type="submit" class="btn btn-primary btn-block btn-large">Supprimer</button>
-		</form>
-	{% endif %}
+	</div>
 {% else: %}
-	<h1 class="title">Modifier une donnée COVID :</h1>
-	<p>Votre session est arrivée à expiration. Merci de vous reconnecter.</p> <!-- Tester comment marche l'expiration -->
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				<div class="form-group">
+					<div class="alert alert-danger" role="alert" id="alert-success-login">
+						<strong>{{ message }}</strong>.
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+	<h3>Saisissez l'identifiant de la donnée à supprimer :</h3>
+	<form action="{{ url_for('covid.delete_data') }}" method="post">
+		<input id="id_data_to_delete" name="id_data_to_delete" type="number" class="form-control" placeholder="identifiant" required />
+		<button type="submit" class="btn btn-primary btn-block btn-large">Supprimer</button>
+	</form>
 {% endif %}
 
 {% endblock %}

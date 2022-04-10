@@ -132,6 +132,10 @@ p {
   text-align: center;
 }
 
+h3 {
+  color:lightblue;
+}
+
 .box {
   position: absolute;
   top: 50%;
@@ -182,4 +186,17 @@ input {
 
 input:focus {
   box-shadow: inset 0 -5px 45px rgba(100, 100, 100, 0.4), 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+table {
+  width: 100%;
+}
+
+table th{
+  word-wrap: break-word; 
+  text-align: center;
+}
+
+table td{
+  white-space: nowrap;
 }

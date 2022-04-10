@@ -1,87 +1,88 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1 class="title">Ajouter une donnée COVID :</h1>
-{% if session['token']: %}
-	<p>Remplissez tous les champs :</p>
-	<form action="{{ url_for('covid.add_data') }}" method="post">
-		<div class="form-group row">
-			<div class="col">
-				<input id="semaine_injection" name="semaine_injection" type="text" pattern="[0-9]{4}-[0-9]{2}" class="form-control" placeholder="Semaine d'injection" required/>
-			</div>
-			<div class="col">
-				<input id="date_reference" name="date_reference" type="text" class="form-control" placeholder="Date de référence" required />
-			</div>
+<h1 class="title">Ajouter une donnée COVID</h1>
+<h3>Remplissez tous les champs :</h3>
+<form action="{{ url_for('covid.add_data') }}" method="post">
+	<div class="form-group row">
+		<div class="col">
+			<input id="semaine_injection" name="semaine_injection" type="text" pattern="[0-9]{4}-[0-9]{2}" class="form-control" placeholder="Semaine d'injection" required/>
 		</div>
-		<div class="form-group row">
-			<div class="col">
-				<input id="classe_age" name="classe_age" type="text" class="form-control" placeholder="Classe age" list="age" required />
-					<datalist id="age">
-						<option value="00-19">
-						<option value="20-39">
-						<option value="40-54">
-						<option value="55-64">
-						<option value="65-74">
-						<option value="75 et +">
-						<option value="TOUT_AGE">
-					</datalist>
-			</div>
-			<div class="col">
-				<input id="libelle_classe_age" name="libelle_classe_age" type="text" class="form-control" placeholder="Libellé classe âge" list="libelle_age" required />
-					<datalist id="libelle_age">
-						<option value="moins de 20 ans">
-						<option value="de 20 à 39 ans">
-						<option value="de 40 à 54 ans">
-						<option value="de 55 à 64 ans">
-						<option value="de 65 à 74 ans">
-						<option value="75 ans et plus">
-						<option value="Tout âge">
-					</datalist>
-			</div>
+		<div class="col">
+			<input id="date_reference" name="date_reference" type="text" class="form-control" placeholder="Date de référence" required />
 		</div>
-		<div class="form-group row">
-			<div class="col">
-				<input id="commune" name="commune_residence" type="number" class="form-control" placeholder="Code commune" required />
-			</div>
-			<div class="col">
-				<input id="libelle_commune" name="libelle_commune" type="text" class="form-control" placeholder="Libellé commune" required />
-			</div>
-			<div class="col">
-				<input id="population_carto" name="population_carto" type="number" class="form-control" placeholder="Population" required />
-			</div>
+	</div>
+	<div class="form-group row">
+		<div class="col">
+			<input id="classe_age" name="classe_age" type="text" class="form-control" placeholder="Classe age" list="age" required />
+				<datalist id="age">
+					<option value="00-19">
+					<option value="20-39">
+					<option value="40-54">
+					<option value="55-64">
+					<option value="65-74">
+					<option value="75 et +">
+					<option value="TOUT_AGE">
+				</datalist>
 		</div>
-		<div class="form-group row">
-			<div class="col">
-				<input id="effectif_1_inj" name="effectif_1_inj" type="number" class="form-control" placeholder="Effectif 1 injection" required />
-			</div>
-			<div class="col">
-				<input id="effectif_termine" name="effectif_termine" type="number" class="form-control" placeholder="Effectif terminé" required />
-			</div>
-			<div class="col">
-				<input id="effectif_cumu_1_inj" name="effectif_cumu_1_inj" type="number" class="form-control" placeholder="Effectif cumu 1 injection" required />
-			</div>
-			<div class="col">
-				<input id="effectif_cumu_termine" name="effectif_cumu_termine" type="number" class="form-control" placeholder="Effectif cumu terminé" required />
-			</div>
+		<div class="col">
+			<input id="libelle_classe_age" name="libelle_classe_age" type="text" class="form-control" placeholder="Libellé classe âge" list="libelle_age" required />
+				<datalist id="libelle_age">
+					<option value="moins de 20 ans">
+					<option value="de 20 à 39 ans">
+					<option value="de 40 à 54 ans">
+					<option value="de 55 à 64 ans">
+					<option value="de 65 à 74 ans">
+					<option value="75 ans et plus">
+					<option value="Tout âge">
+				</datalist>
 		</div>
-		<div class="form-group row">
-			<div class="col">
-				<input id="taux_1_inj" name="taux_1_inj" type="number" step="0.001" class="form-control" placeholder="Taux 1 injection" required />
-			</div>
-			<div class="col">
-				<input id="taux_termine" name="taux_termine" type="number" step="0.001" class="form-control" placeholder="Taux terminé" required />
-			</div>
-			<div class="col">
-				<input id="taux_cumu_1_inj" name="taux_cumu_1_inj" type="number" step="0.001" class="form-control" placeholder="Taux cumu 1 injection" required />
-			</div>
-			<div class="col">
-				<input id="taux_cumu_termine" name="taux_cumu_termine" type="number" step="0.001" class="form-control" placeholder="Taux cumu terminé" required />
-			</div>
+	</div>
+	<div class="form-group row">
+		<div class="col">
+			<input id="commune" name="commune_residence" type="number" class="form-control" placeholder="Code commune" required />
 		</div>
-		<button type="submit" class="btn btn-primary btn-block btn-large">Créer</button>
-	</form>
-	{% if output_data: %}
-		<!-- Affichage des données -->
+		<div class="col">
+			<input id="libelle_commune" name="libelle_commune" type="text" class="form-control" placeholder="Libellé commune" required />
+		</div>
+		<div class="col">
+			<input id="population_carto" name="population_carto" type="number" class="form-control" placeholder="Population" required />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col">
+			<input id="effectif_1_inj" name="effectif_1_inj" type="number" class="form-control" placeholder="Effectif 1 injection" required />
+		</div>
+		<div class="col">
+			<input id="effectif_termine" name="effectif_termine" type="number" class="form-control" placeholder="Effectif terminé" required />
+		</div>
+		<div class="col">
+			<input id="effectif_cumu_1_inj" name="effectif_cumu_1_inj" type="number" class="form-control" placeholder="Effectif cumu 1 injection" required />
+		</div>
+		<div class="col">
+			<input id="effectif_cumu_termine" name="effectif_cumu_termine" type="number" class="form-control" placeholder="Effectif cumu terminé" required />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col">
+			<input id="taux_1_inj" name="taux_1_inj" type="number" step="0.001" class="form-control" placeholder="Taux 1 injection" required />
+		</div>
+		<div class="col">
+			<input id="taux_termine" name="taux_termine" type="number" step="0.001" class="form-control" placeholder="Taux terminé" required />
+		</div>
+		<div class="col">
+			<input id="taux_cumu_1_inj" name="taux_cumu_1_inj" type="number" step="0.001" class="form-control" placeholder="Taux cumu 1 injection" required />
+		</div>
+		<div class="col">
+			<input id="taux_cumu_termine" name="taux_cumu_termine" type="number" step="0.001" class="form-control" placeholder="Taux cumu terminé" required />
+		</div>
+	</div>
+	<button type="submit" class="btn btn-primary btn-block btn-large">Créer</button>
+</form>
+{% if output_data: %}
+	<h3>Donnée {{output_data.id}} créée !</h3>
+	<!-- Affichage des données -->
+	<div class="table-responsive">
 		<table class="table table-light table-hover table-striped overflow-auto">
 			<thead>
 			<tr>
@@ -127,9 +128,7 @@
 				</tr>
 			</tbody>
 		</table>
-	{% endif %}
-{% else: %}
-	<p>Votre session est arrivée à expiration. Merci de vous reconnecter.</p> <!-- Tester comment marche l'expiration -->
+	</div>
 {% endif %}
 
 {% endblock %}
