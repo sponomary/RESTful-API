@@ -11,40 +11,15 @@ from datetime import datetime
 covid = Blueprint('covid', __name__)
 
 
-# Route qui retourne toutes les données covid ✅
+# Route qui retourne toutes les données covid
+# Par défaut, renvoie max 5000 données
 @covid.route('/', methods=["GET"])
 def get_all_covid(limit=5000):
     results = DataCovidModel.query.limit(limit).all()
     data_covid_schema = DataCovidSchema(many=True)
     return jsonify(data_covid_schema.dump(results))
 
-"""
-# CODE LUFEI TEST PAGINATION
-
-@covid.route('/', methods=["GET"])
-def get_all_covid():
-    result = DataCovidModel.query.all() 
-    seperate_data = get_paginated_list(
-        result, 
-        '/', 
-        start=request.args.get('start', 1), 
-        limit=request.args.get('limit', 20)
-    )
-    #print(seperate_data['results'])
-    total_data = seperate_data['count']
-    data_covid_schema = DataCovidSchema(many=True)
-    #print(jsonify(data_covid_schema.dump(seperate_data['results'])))
-    print(total_data)
-    return jsonify(
-        {
-            "Total data":total_data,
-            "Data":data_covid_schema.dump(seperate_data['results'])
-        })
-"""
-
-
-
-# Route qui met à jour une donnée covid ✅
+# Route qui met à jour une donnée covid
 @covid.route('/<int:id>/', methods=["PATCH"])
 @token_required  # nécessite une connexion
 def update_covid(id):
@@ -71,7 +46,7 @@ def update_covid(id):
     return data_covid_schema.jsonify(data_covid)
 
 
-# Route qui supprime une donnée covid ✅
+# Route qui supprime une donnée covid
 @covid.route('/<int:id>/', methods=["DELETE"])
 @token_required  # nécessite une connexion
 def delete_covid(id):
@@ -81,7 +56,7 @@ def delete_covid(id):
     return data_covid_schema.jsonify(data_covid)
 
 
-# Route qui crée une nouvelle donnée covid ✅
+# Route qui crée une nouvelle donnée covid
 @covid.route('/', methods=['POST'])
 @token_required  # nécessite une connexion
 def create_covid():
@@ -116,7 +91,7 @@ def create_covid():
     return data_covid_schema.jsonify(data)
 
 
-# Route qui retourne une donnée covid ✅
+# Route qui retourne une donnée covid
 @covid.route('/<int:id>/', methods=['GET'])
 def get_covid_by_id(id):
     result = DataCovidModel.query.get(id)
@@ -124,7 +99,7 @@ def get_covid_by_id(id):
     return data_covid_schema.jsonify(result)
 
 
-# Route qui permet de retourner toutes les données uniques de certains colonnes ✅
+# Route qui permet de retourner toutes les données uniques de certains colonnes
 @covid.route('/<string:info>/', methods=["GET"])
 def get_distinct_value(info):
     info_recherche = '% s' % info
@@ -138,9 +113,10 @@ def get_distinct_value(info):
     return jsonify({info_recherche: results})
 
 
-# Route qui renvoie les résultats d'une requête (simple ou multiple) ✅
+# Route qui renvoie les résultats d'une requête (simple ou multiple)
+# Par défaut, renvoie max 5000 données
 @covid.route('/search', methods=["GET"])
-def data_filter():
+def data_filter(limit=5000):
     query_parameters = request.args
     fields = DataCovidModel.__table__.columns
     results = db.session.query(DataCovidModel)
@@ -149,6 +125,6 @@ def data_filter():
             return {"error :": "404",
                     "message : ": "page not found"}
         results = results.filter(getattr(DataCovidModel, k) == v)
-    results = results.all()
+    results = results.limit(limit).all()
     data_covid_schema = DataCovidSchema(many=True)
     return jsonify(data_covid_schema.dump(results))
