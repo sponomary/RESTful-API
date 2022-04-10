@@ -41,6 +41,7 @@ def create_client(data):
     resp_api = requests.post(URL_USER_POST, data)
     return resp_api.json()
 
+#URL_ALLDATA_GET ---> obtenir toutes les données covid (nb max)
 # PB : fait freeze le pc car trop de données :(
 def get_all_covid(data_range):
     # il faut que url passé à requests.get ressemble à ca : http://dataviewer.api.localhost:5000/api/covid/?start=1&limit=5
@@ -55,10 +56,7 @@ def get_all_covid(data_range):
     #resp_api = requests.get(URL_ALLDATA_GET)
     #return resp_api.status_code, resp_api.json()
 
-
-# (?) peut-être on peut zapper ça car se fait direct dans la recherche si on remplit que le champ id (?) à voir
-# Je suis d'accord pour enlever ça, ça rend plus prore ---lulu
-# elise --- Non en fait on peut le laisser ici pour l'appeler pour update_data ?
+#URL_ONEDATA_GET_PATCH_DELETE ---> obtenir une donnée covid à partir de son id
 def get_covid_by_id(id):
     print("GET COVID ID "+id)
     resp_api = requests.get(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id))
@@ -66,6 +64,7 @@ def get_covid_by_id(id):
     print("code:",resp_api.status_code)
     return resp_api.status_code, resp_api.json()
 
+#URL_ONEDATA_GET_PATCH_DELETE ---> modifier une donnée covid
 def update_covid(token,id,data):
     print("UPDATE COVID ID "+id)
     headers = {"x-access-token": token}
@@ -73,6 +72,7 @@ def update_covid(token,id,data):
     resp_api = requests.patch(URL_ONEDATA_GET_PATCH_DELETE.format(data_id=id),data,headers=headers)
     return resp_api.status_code, resp_api.json()
 
+#URL_ONEDATA_GET_PATCH_DELETE ---> supprimer une donnée covid
 def delete_covid(token,id):
     print("DELETE COVID ID "+id)
     headers = {"x-access-token": token}
@@ -88,14 +88,9 @@ def add_covid(token,data):
     resp_api = requests.post(URL_ONEDATA_POST,data,headers=headers)
     return resp_api.status_code,resp_api.json()
 
-# URL_MULTIPLE_INFO_GET ---> exploiter le formulaire HTML
+# URL_MULTIPLE_INFO_GET ---> requête
 def get_multiple_info(search_info):
     print("REQUEST : "+URL_MULTIPLE_INFO_GET.format(info = search_info))
     resp_api = requests.get(URL_MULTIPLE_INFO_GET.format(info = search_info))
     print("RESP:",resp_api.json())
     return resp_api.json()
-    #print("CODE",resp_api.status_code)
-    #return resp_api.status_code,resp_api.json()
-
-
-# URL_UNIQUE_INFO_GET ---> faire + tard car implique un nouveau tableau HTML et modifs jinja

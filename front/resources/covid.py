@@ -24,13 +24,11 @@ def data():
                     html_params += "&"
                 html_params += k + "=" + v
         api_resp = get_multiple_info(html_params)
-        #code_resp = api_resp[0] # status code
-        data_resp = api_resp # données covid au format json
+        data_resp = api_resp # résultat de la requête
         if len(data_resp) > 0:
             return render_template('data.html',output_data=data_resp, many=True)
         else:
             flash("Aucune donnée ne correspond à votre recherche")
-            #flash("Aucune donnée ne correspond à votre recherche : %s"%status_code)
             return render_template('data.html')
      
     elif request.method == 'GET':
