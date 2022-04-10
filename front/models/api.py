@@ -1,5 +1,5 @@
+#!/usr/bin/python3
 # coding: utf-8 
-
 
 """
     M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
@@ -11,8 +11,6 @@
 __version__ = "0.1"
 
 import requests
-import json
-from os import environ
 
 # -----------------------------------------------------------------------
 
@@ -31,15 +29,17 @@ __all__ = ['login_api','create_client','get_all_covid','get_covid_by_id','update
 
 # -----------------------------------------------------------------------
 
+#URL_LOGIN ---> connecte un utilisateur (génération d'un token)
 def login_api(data):
     resp_api = requests.post(URL_LOGIN, data)
     return resp_api.json()
 
+#URL_USER_POST ---> ajoute un nouvel utilisateur à la base de données
 def create_client(data):
     resp_api = requests.post(URL_USER_POST, data)
     return resp_api.json()
 
-#URL_ALLDATA_GET ---> obtenir toutes les données covid (nb max)
+#URL_ALLDATA_GET ---> obtenir toutes les données covid (nb max à 5000, back/resources/covid.py)
 def get_all_covid():
     print("GET ALL DATA")
     resp_api = requests.get(URL_ALLDATA_GET)
@@ -78,7 +78,7 @@ def add_covid(token,data):
     resp_api = requests.post(URL_ONEDATA_POST,data,headers=headers)
     return resp_api.status_code,resp_api.json()
 
-# URL_MULTIPLE_INFO_GET ---> requête
+# URL_MULTIPLE_INFO_GET ---> requête (nb de résultats max à 5000, back/resources/covid.py)
 def get_multiple_info(search_info):
     print("GET DATA : REQUEST : "+URL_MULTIPLE_INFO_GET.format(info = search_info))
     resp_api = requests.get(URL_MULTIPLE_INFO_GET.format(info = search_info))
