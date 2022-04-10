@@ -23,7 +23,7 @@ dataviewerBack.register_blueprint(users)
 dataviewerBack.register_blueprint(covid, url_prefix='/covid')
 
 dataviewerBack.config['DEBUG'] = True
-#dataviewerBack.config['SERVER_NAME'] = 'dataviewer.api.localhost:5000'
+dataviewerBack.config['SERVER_NAME'] = 'dataviewer.api.localhost:5000'
 dataviewerBack.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data/DataViewer.db'
 dataviewerBack.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 dataviewerBack.config.update({'SCHEDULER_API_ENABLED': True})
