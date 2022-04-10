@@ -33,6 +33,8 @@ dataviewerFront.config['DEBUG'] = True
 dataviewerFront.config['SESSION_TYPE'] = 'filesystem'
 dataviewerFront.config["PERMANENT_SESSION_LIFETIME"] = 1800
 dataviewerFront.config["SECRET_KEY"] = "dataviewerSecretKey2022"
+dataviewerFront.config['SERVER_NAME'] = 'dataviewer.localhost:5000'
+
 sess = Session(dataviewerFront)
 sess.init_app(dataviewerFront)
 
