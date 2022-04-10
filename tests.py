@@ -4,13 +4,10 @@
 from __future__ import unicode_literals
 
 """
-    ERTIM - INALCO :  TECHNIQUES WEB (REST API)
+    M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
     ------------------------------------------
-    
-    This module test all functionalities of API.
-    
-    :copyright: © 2020 by Elvis.
-    :license: Creative Commons, see LICENSE for more details.
+    Ce module teste les fonctionnalités de l'API.
+    :copyright: © 2022 by Élise & Lufei & Alexandra.
 """
 
 

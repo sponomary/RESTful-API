@@ -4,7 +4,7 @@
 """
     M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
     -------------------------------------------
-    Ce module lance l'API. 
+    Ce module interroge le backend. 
     :copyright: © 2022 by Élise & Lufei & Alexandra.
 """
 

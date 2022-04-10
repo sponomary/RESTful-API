@@ -1,3 +1,13 @@
+#!/usr/bin/python3
+# coding: utf-8
+
+"""
+    M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
+    -------------------------------------------
+    Ce module lance l'API. 
+    :copyright: © 2022 by Élise & Lufei & Alexandra.
+"""
+
 from cmath import log
 from inspect import BoundArguments
 from flask import Blueprint, request, flash, redirect, render_template, session, url_for
