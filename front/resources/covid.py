@@ -4,13 +4,11 @@
 """
     M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
     -------------------------------------------
-    Ce module lance l'API. 
+    Ce module front permet d'ajouter, consulter, supprimer, modifier des données COVID.
     :copyright: © 2022 by Élise & Lufei & Alexandra.
 """
 
-from cmath import log
-from inspect import BoundArguments
-from flask import Blueprint, request, flash, redirect, render_template, session, url_for
+from flask import Blueprint, request, flash, redirect, render_template, url_for
 from back.resources.covid import delete_covid
 from front.models.api import get_all_covid, get_covid_by_id, get_multiple_info, add_covid, update_covid, delete_covid
 from front.resources.user import login_required
@@ -49,39 +47,6 @@ def data():
         data_resp = api_resp[1] # données covid
         return render_template('data.html', output_data=data_resp, many=True)
 
-"""
-# CODE LUFEI TEST PAGINATION
-
-# Afficher les données par paquet
-@covid.route('/data/search',methods=('GET', 'POST'))
-def data_seperation():    
-    if request.method == 'POST':
-        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-        # concrètement j'ai plagié ton code magnifique
-        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-        body_data = request.form.to_dict() # récupère toutes les champs du formulaire
-        # Récupération des champs pour lesquels une valeur est saisie uniquement
-        # + Mise en forme au format de requête HTML
-        # Exemple : {'libelle_commune': 'ANTONY', 'population_carto':14810}
-        #          --> libelle_commune=ANTONY&population_carto=14810
-        print(body_data)
-        html_params = ""
-        for k,v in body_data.items():
-            if v != '':
-                if html_params != '':
-                    html_params += "&"
-                html_params += k + "=" + v
-        print("URL:",html_params)
-        api_resp = get_all_covid(html_params) #retourne toutes les données covid par défaut
-        code_resp = api_resp[0] # status code
-        data_resp = api_resp[1] # les données covid au format json
-        total_data_nb = api_resp[2] # 🐽🐽🐽🐽🐽🐽🐽 nombre total des données dans BD, comment affciher ça sur notre page ? 🐽🐽🐽🐽🐽🐽🐽
-        return render_template('all.html', output_data=data_resp, nb=total_data_nb, many=True)
-    
-    elif request.method == 'GET':
-        return render_template('all.html')
-"""
-
 # Créer une nouvelle donnée
 @covid.route('/data/new',methods=('GET', 'POST'))
 @login_required
@@ -94,11 +59,6 @@ def add_data(token):
         if code_resp not in [200, 201]:
             flash('Veuillez vous connecter.')
             return redirect(url_for('users.login'))
-        # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-        # si on veut écrire des trucs
-        #flash("Donnée ajoutée")
-        #flash("Impossible de créer une donnée à partir de votre saisie")
-        #(on pourrait aussi mettre des conditions sur les champs du formulaire pour pas que l'utilisateur saisisse n'importe quoi)
         return render_template('add_data.html', output_data=data_resp)
     elif request.method == 'GET':
         return render_template('add_data.html')
@@ -126,11 +86,6 @@ def update_data(token):
             if code_resp not in [200, 201]:
                 flash('Veuillez vous connecter.')
                 return redirect(url_for('users.login'))
-            # 🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-            # si on veut écrire des trucs
-            #flash("Donnée modifiée")
-            #flash("Impossible de modifier la donnée à partir de votre saisie")
-            #(on pourrait aussi mettre des conditions sur les champs du formulaire pour pas que l'utilisateur saisisse n'importe quoi)
             return render_template('update_data.html', output_data=data_resp, id_updated=id)
     elif request.method == 'GET':
         return render_template('update_data.html')

@@ -4,7 +4,7 @@
 """
     M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
     -------------------------------------------
-    Ce module lance l'API. 
+    Ce module front permet d'inscrire et connecter des utilisateurs.
     :copyright: © 2022 by Élise & Lufei & Alexandra.
 """
 
@@ -39,7 +39,7 @@ def register():
             session.clear()
             session['user'] = user
             session['token'] = token
-            flash("Inscription et connexion réussies : %s"%status_code) # 🐽🐽🐽🐽🐽 peut etre enlever ce flash ??? 🐽🐽🐽🐽🐽
+            flash("Inscription et connexion réussies : %s"%status_code)
             return redirect(url_for("home"))
     # GET: renvoie la page d'inscription
     return render_template('register.html')
@@ -78,7 +78,7 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
-# token
+# Token
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
