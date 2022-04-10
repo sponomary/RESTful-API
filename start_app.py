@@ -8,32 +8,12 @@
     :copyright: © 2022 by Élise & Lufei & Alexandra.
 """
 
-"""
-🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-1 . ce programme permet de relier front & back, inspiré de code seigneur et de ce lien:
-# https://www.peterspython.com/en/blog/two-flask-apps-frontend-and-admin-on-one-domain-using-dispatchermiddleware
-2. j'ai donc changé le nom de notre app back en dataviewerBack
-3. il faudrait peut etre réorganiser notre dossier avec une structure comme ca (notre RESTful-API --> backend)
-├── projet_techniques_web
-│   ├── backend
-│   │   └── tous ce qu'on a dans le dossier RESTful-API
-│   ├── frontend
-│   │   ├── app.py
-│   │   ├── models
-│   │   ├── ressources
-│   │   ├── static
-│   │   ├── templates
-│   ├── start_app.py
-│   └── test.py (seigneur demande de faire des tests unitaires)
-4. 
-🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽🐽
-"""
-__version__ = "0.1"
+__version__ = "1.0"
 
 from flask import Flask
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 
-# importer application backend et frontend
+# importer applications backend et frontend
 from front.app import dataviewerFront as frontend
 from back.app import dataviewerBack as backend
 
@@ -56,4 +36,3 @@ dataviewer_app.config['SERVER_NAME'] = 'dataviewer.localhost:5000'
 
 if __name__ == '__main__':
     dataviewer_app.run(use_evalex=True, use_reloader=True, use_debugger=True)
-    #dataviewer_app.run(host='127.0.0.1', port='5000', use_evalex=True, use_reloader=True, use_debugger=True)
