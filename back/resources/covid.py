@@ -1,11 +1,18 @@
 #!/usr/bin/python3
 # coding: utf-8
 
+"""
+    M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
+    -------------------------------------------
+    Ce module back permet d'ajouter, consulter, supprimer, modifier des données COVID.
+    :copyright: © 2022 by Élise & Lufei & Alexandra.
+"""
+
 from flask import Blueprint
 from ..models.covid import DataCovidModel, DataCovidSchema
 from ..models.db import db
 from flask import request, jsonify
-from ..lib.utils import token_required,get_paginated_list
+from ..lib.utils import token_required
 from datetime import datetime
 
 covid = Blueprint('covid', __name__)

@@ -1,7 +1,17 @@
+#!/usr/bin/python3
+# coding: utf-8
+
+"""
+    M2 TAL, INGÉNIERIE MULTILINGUE : TECHNIQUES WEB (REST API)
+    -------------------------------------------
+    Ce module back permet d'inscrire et connecter des utilisateurs.
+    :copyright: © 2022 by Élise & Lufei & Alexandra.
+"""
+
 import email
 from flask import Blueprint
 from ..models.user import User
-from flask import request, jsonify, make_response
+from flask import request, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from datetime import datetime, timedelta
